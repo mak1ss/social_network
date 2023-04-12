@@ -42,15 +42,15 @@ public class User {
     )
     private Set<User> followings = new HashSet<>();
 
-    public void addPost(Post post, boolean isUserSetted){
-        if(isUserSetted){
+    public void addPost(Post post, boolean isUserSetted) {
+        if (isUserSetted) {
             this.posts.add(post);
         } else {
             post.setUser(this, false);
         }
     }
 
-    public void addFollowing(User newFollowing){
+    public void addFollowing(User newFollowing) {
         this.followings.add(newFollowing);
     }
 
