@@ -32,5 +32,6 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Integer
     boolean existsById(int postId);
 
     @Modifying
+    @Query("update Post as post SET post.postBody = ?1 WHERE post.id = ?2 AND post.user.id = ?3")
     void updatePost(String postBody, int postId, int userId);
 }

@@ -13,7 +13,6 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-@NamedNativeQuery(name = "User.deleteTestRows", query = "DELETE FROM users WHERE full_name = 'test_name'")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

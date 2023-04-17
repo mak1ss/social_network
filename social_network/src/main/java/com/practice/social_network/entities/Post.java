@@ -15,7 +15,6 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 @Table(name = "posts")
-@NamedQuery(name = "Post.updatePost", query = "update Post as post SET post.postBody = ?1 WHERE post.id = ?2 AND post.user.id = ?3")
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
     @Id
