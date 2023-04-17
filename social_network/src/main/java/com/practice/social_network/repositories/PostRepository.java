@@ -26,7 +26,7 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Integer
 
     List<Post> getPostsByUserId(int userId);
 
-    @Query(nativeQuery = true)
+    @Query("SELECT post FROM Post post LEFT JOIN User user INNER JOIN user.followings f ON post.user = f WHERE user.id = :userId ")
     List<Post> getFriendsPosts(int userId, Pageable pageable);
 
     boolean existsById(int postId);

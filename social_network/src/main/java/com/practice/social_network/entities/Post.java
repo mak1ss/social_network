@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Timestamp;
 
@@ -13,9 +15,8 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 @Table(name = "posts")
-@NamedNativeQuery(name = "Post.getFriendsPosts", resultClass = Post.class, query = "SELECT * FROM posts WHERE posts.user_id IN " +
-        "(SELECT followed_user_id from followings WHERE followings.following_user_id = ?1)")
-@NamedQuery(name = "Post.updatePost" , query = "update Post as post SET post.postBody = ?1 WHERE post.id = ?2 AND post.user.id = ?3")
+@NamedQuery(name = "Post.updatePost", query = "update Post as post SET post.postBody = ?1 WHERE post.id = ?2 AND post.user.id = ?3")
+@EntityListeners(AuditingEntityListener.class)
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,18 +29,19 @@ public class Post {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "creation_date")
+    @CreatedDate
     private Timestamp creationDate;
 
     @Column(name = "post_body")
     private String postBody;
 
-    public int getUser(){
+    public int getUser() {
         return user.getId();
     }
 
-    public void setUser(User user, boolean isPostSetted){
+    public void setUser(User user, boolean isPostSetted) {
         this.user = user;
-        if(!isPostSetted) {
+        if (!isPostSetted) {
             user.addPost(this, true);
         }
     }

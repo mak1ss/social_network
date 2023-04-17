@@ -2,15 +2,15 @@ package com.practice.social_network.services.implementations;
 
 import com.practice.social_network.entities.Post;
 import com.practice.social_network.entities.User;
-import com.practice.social_network.repositories.PostRepository;
+
 import com.practice.social_network.repositories.UserRepository;
 import com.practice.social_network.services.intefaces.PostService;
-
+import com.practice.social_network.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +33,6 @@ public class PostServiceImpl implements PostService {
             throw new IllegalArgumentException("Wrong user ID");
         }
         post.setUser(userById.get(), false);
-        post.setCreationDate(new Timestamp(System.currentTimeMillis()));
         return postRepository.save(post);
     }
 
@@ -68,7 +67,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getFriendsPosts(int userId, int pageNumber) throws IllegalArgumentException {
-        if (!userRepository.existsById(userId)) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
             throw new IllegalArgumentException("Wrong user ID");
         }
         return postRepository.getFriendsPosts(userId, PageRequest.of(pageNumber, 20));
