@@ -23,7 +23,7 @@ public class PostCrudTests {
     private ApplicationContext context;
     private User user;
 
-    private Post addPost(){
+    private Post addPost() {
         Post post = new Post();
         post.setUser(user);
         post.setPostBody("body_of_test_post");
@@ -48,7 +48,7 @@ public class PostCrudTests {
 
 
     @After
-    public void cleanDb(){
+    public void cleanDb() {
         try {
             userRepository.deleteTestRows();
         } catch (IllegalArgumentException ex) {
@@ -66,26 +66,26 @@ public class PostCrudTests {
     }
 
     @Test
-    public void insertPostTest(){
+    public void insertPostTest() {
         Post post = addPost();
         postRepository.save(post);
     }
 
     @Test
-    public void deletePostTest(){
+    public void deletePostTest() {
         Post post = addPost();
         post = postRepository.save(post);
         Optional<List<Post>> allPosts = postRepository.findByUserId(user.getId());
         assertTrue(allPosts.isPresent());
         int prevSize = allPosts.get().size();
-        postRepository.delete(post);
+        postRepository.deleteById(post.getId());
 
         allPosts = postRepository.findByUserId(user.getId());
         assertNotEquals(prevSize, allPosts.get().size());
     }
 
     @Test
-    public void updatePostTest(){
+    public void updatePostTest() {
         Post post = addPost();
         post = postRepository.save(post);
 
@@ -94,7 +94,6 @@ public class PostCrudTests {
         Post updatedPost = postRepository.save(post);
         assertEquals(updatedPost.getPostBody(), "updated_post_body");
     }
-
 
 
 }

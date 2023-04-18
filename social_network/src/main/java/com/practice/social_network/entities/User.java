@@ -13,7 +13,6 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-@NamedNativeQuery(name = "User.deleteTestRows", query = "DELETE FROM users WHERE full_name = 'test_name'")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,15 +41,15 @@ public class User {
     )
     private Set<User> followings = new HashSet<>();
 
-    public void addPost(Post post, boolean isUserSetted){
-        if(isUserSetted){
+    public void addPost(Post post, boolean isUserSetted) {
+        if (isUserSetted) {
             this.posts.add(post);
         } else {
             post.setUser(this, false);
         }
     }
 
-    public void addFollowing(User newFollowing){
+    public void addFollowing(User newFollowing) {
         this.followings.add(newFollowing);
     }
 

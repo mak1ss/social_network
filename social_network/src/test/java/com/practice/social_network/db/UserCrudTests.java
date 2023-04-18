@@ -89,7 +89,7 @@ public class UserCrudTests {
     }
 
     @Test
-    public void deleteUserTest(){
+    public void deleteUserTest() {
         insertUser();
 
         repository.delete(user);
