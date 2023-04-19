@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserRepository extends CrudRepository<User, Integer> {
 
     @Modifying
-    @Query("DELETE User WHERE User.fullName = 'test_name'")
+    @Query("DELETE FROM User u WHERE u.fullName = 'test_name'")
     void deleteTestRows();
 
     User deleteById(int userId);
