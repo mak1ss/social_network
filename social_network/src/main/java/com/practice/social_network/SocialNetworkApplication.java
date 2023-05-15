@@ -1,6 +1,5 @@
 package com.practice.social_network;
 
-import ch.qos.logback.classic.util.ContextInitializer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
