@@ -7,6 +7,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Transactional
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
@@ -16,4 +18,10 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     void deleteTestRows();
 
     User deleteById(int userId);
+
+    Optional<User> findUserByEmail(String email);
+
+    @Modifying
+    @Query("UPDATE User u SET u.password = :newPassword WHERE u.id = :userId")
+    void updatePassword(int userId, String newPassword);
 }
