@@ -16,4 +16,6 @@ public interface UserService {
     User followToUser(int userId, int userToFollowId) throws IllegalArgumentException;
 
     List<User> getAllUsers();
+
+    User changeUserPassword(int userId, String newPassword);
 }

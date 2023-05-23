@@ -3,6 +3,7 @@ package com.practice.social_network.controllers;
 import com.practice.social_network.services.intefaces.PostService;
 import com.practice.social_network.entities.Post;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/posts")
+@SecurityRequirement(name = "networkScheme")
 public class PostController {
 
     private final PostService service;
