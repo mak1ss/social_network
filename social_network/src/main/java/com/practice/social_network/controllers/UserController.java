@@ -3,6 +3,7 @@ package com.practice.social_network.controllers;
 import com.practice.social_network.entities.User;
 import com.practice.social_network.services.intefaces.UserService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/user")
+@SecurityRequirement(name = "networkScheme")
 public class UserController {
 
     private final UserService service;
@@ -46,4 +48,8 @@ public class UserController {
         return service.followToUser(userId, userToFollowId);
     }
 
+    @PutMapping(path = "/new-password")
+    public User changePassword(@RequestParam(name = "userId") int userId, @RequestParam(name = "newPassword") String newPassword){
+        return service.changeUserPassword(userId, newPassword);
+    }
 }
