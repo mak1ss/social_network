@@ -26,7 +26,7 @@ public class UserDTO {
 
     private String nickname;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
     private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
