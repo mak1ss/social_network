@@ -1,6 +1,6 @@
 package com.practice.social_network.controllers;
 
-import com.practice.social_network.entities.User;
+import com.practice.social_network.dtos.UserDTO;
 import com.practice.social_network.services.intefaces.UserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -23,33 +23,33 @@ public class UserController {
     }
 
     @GetMapping(path = "/all")
-    public List<User> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         return service.getAllUsers();
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
+    public UserDTO createUser(@RequestBody UserDTO user) {
         return service.createUser(user);
     }
 
     @PutMapping(path = "/{userId}")
-    public User updateUser(@PathVariable int userId, @RequestBody User user) {
+    public UserDTO updateUser(@PathVariable int userId, @RequestBody UserDTO user) {
         user.setId(userId);
         return service.updateUser(user);
     }
 
     @DeleteMapping(path = "/{userId}")
-    public User deleteUser(@PathVariable int userId) {
+    public UserDTO deleteUser(@PathVariable int userId) {
         return service.deleteUser(userId);
     }
 
     @PutMapping(path = "/{userId}/follow/")
-    public User followToUser(@PathVariable int userId, @RequestParam(name = "userToFollow") int userToFollowId) {
+    public UserDTO followToUser(@PathVariable int userId, @RequestParam(name = "userToFollow") int userToFollowId) {
         return service.followToUser(userId, userToFollowId);
     }
 
     @PutMapping(path = "/new-password")
-    public User changePassword(@RequestParam(name = "userId") int userId, @RequestParam(name = "newPassword") String newPassword){
+    public UserDTO changePassword(@RequestParam(name = "userId") int userId, @RequestParam(name = "newPassword") String newPassword){
         return service.changeUserPassword(userId, newPassword);
     }
 }

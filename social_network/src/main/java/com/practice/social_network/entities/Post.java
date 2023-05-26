@@ -1,6 +1,5 @@
 package com.practice.social_network.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,12 +20,10 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JoinColumn(name = "user_id")
     @ManyToOne
     private User user;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "creation_date")
     @CreatedDate
     private Timestamp creationDate;
@@ -34,8 +31,8 @@ public class Post {
     @Column(name = "post_body")
     private String postBody;
 
-    public int getUser() {
-        return user.getId();
+    public User getUser() {
+        return user;
     }
 
     public void setUser(User user, boolean isPostSetted) {
