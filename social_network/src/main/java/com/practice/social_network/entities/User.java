@@ -34,7 +34,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
 
-
+    //In this case, collection of followings contains the users, followed by this user instance
     @ManyToMany
     @JoinTable(
             name = "followings",
@@ -42,6 +42,17 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "followed_user_id")
     )
     private Set<User> followings = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name ="posts_likes",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name="post_id")
+    )
+    private Set<Post> likedPosts = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<PostComment> comments = new HashSet<>();
 
     public void addPost(Post post, boolean isUserSetted) {
         if (isUserSetted) {

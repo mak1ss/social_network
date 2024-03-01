@@ -26,12 +26,26 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Integer
 
     List<Post> getPostsByUserId(int userId);
 
-    @Query("SELECT post FROM Post post LEFT JOIN User user INNER JOIN user.followings f ON post.user = f WHERE user.id = :userId ")
+    @Query("""
+            SELECT p
+            FROM Post p
+            WHERE p.user IN
+                (SELECT f
+                FROM User u
+                JOIN u.followings f
+                WHERE u.id = :userId)
+            """)
     List<Post> getFriendsPosts(int userId, Pageable pageable);
 
     boolean existsById(int postId);
 
     @Modifying
-    @Query("update Post as post SET post.postBody = ?1 WHERE post.id = ?2 AND post.user.id = ?3")
+    @Query("""
+           UPDATE Post post
+           SET post.postBody = ?1
+           WHERE post.id = ?2
+           AND post.user.id = ?3
+           """)
     void updatePost(String postBody, int postId, int userId);
+
 }

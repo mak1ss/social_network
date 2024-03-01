@@ -1,5 +1,6 @@
 package com.practice.social_network.controllers;
 
+import com.practice.social_network.dtos.PostCommentDTO;
 import com.practice.social_network.dtos.PostDTO;
 import com.practice.social_network.services.intefaces.PostService;
 
@@ -32,9 +33,12 @@ public class PostController {
         return service.createPost(post, userId);
     }
 
-    @PutMapping(path = "/{userId}")
-    public PostDTO updatePost(@PathVariable int userId, @RequestBody PostDTO post) {
-        return service.updatePost(post, userId);
+    @PutMapping(path = "/{userId}/{postId}")
+    public PostDTO updatePost(@PathVariable int userId, @PathVariable int postId, @RequestParam String newPostBody) {
+        PostDTO dto = new PostDTO();
+        dto.setId(postId);
+        dto.setPostBody(newPostBody);
+        return service.updatePost(dto, userId);
     }
 
     @DeleteMapping(path = "/{userId}")
@@ -47,4 +51,18 @@ public class PostController {
         return service.getFriendsPosts(userId, pageNumber);
     }
 
+    @PutMapping(path = "/{postId}/like")
+    public PostDTO likePost(@PathVariable int postId, @RequestParam int userId) {
+        return service.likePost(userId, postId);
+    }
+
+    @PutMapping(path = "/{postId}/comment")
+    public PostDTO leaveComment(@PathVariable int postId, @RequestParam int userId, @RequestParam String commentBody){
+        return service.leaveComment(commentBody, postId, userId);
+    }
+
+    @GetMapping(path="/{postId}/comments")
+    public List<PostCommentDTO> getPostComments(@PathVariable int postId, @RequestParam int pageNumber){
+        return service.getPostComments(postId, pageNumber);
+    }
 }

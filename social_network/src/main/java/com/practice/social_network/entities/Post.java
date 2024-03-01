@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Timestamp;
+import java.util.*;
 
 @Getter
 @Setter
@@ -21,7 +23,7 @@ public class Post {
     private int id;
 
     @JoinColumn(name = "user_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     @Column(name = "creation_date")
@@ -30,6 +32,14 @@ public class Post {
 
     @Column(name = "post_body")
     private String postBody;
+
+    @ManyToMany(mappedBy = "likedPosts")
+    @Lazy
+    private Set<User> likes = new HashSet<>();
+
+    @OneToMany(mappedBy = "post")
+    @Lazy
+    Set<PostComment> comments = new HashSet<>();
 
     public User getUser() {
         return user;
