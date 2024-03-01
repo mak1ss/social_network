@@ -3,7 +3,7 @@ package com.practice.social_network.services.implementations;
 import com.practice.social_network.dtos.UserDTO;
 import com.practice.social_network.entities.User;
 import com.practice.social_network.repositories.UserRepository;
-import com.practice.social_network.services.intefaces.mappers.DTOMapper;
+import com.practice.social_network.services.intefaces.mappers.UserDTOMapper;
 import com.practice.social_network.services.intefaces.UserService;
 
 import org.mapstruct.factory.Mappers;
@@ -23,13 +23,13 @@ public class UserServiceImpl implements UserService {
 
     private PasswordEncoder passEncoder;
 
-    private DTOMapper dtoMapper;
+    private UserDTOMapper dtoMapper;
 
     @Autowired
     public UserServiceImpl(UserRepository repository, PasswordEncoder passEncoder) {
         this.repository = repository;
         this.passEncoder = passEncoder;
-        this.dtoMapper = Mappers.getMapper(DTOMapper.class);
+        this.dtoMapper = Mappers.getMapper(UserDTOMapper.class);
     }
 
     @Override
@@ -69,8 +69,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getAllUsers() {
-        List<User> resultList = new ArrayList<>();
-        repository.findAll().forEach(resultList::add);
+        List<User> resultList = new ArrayList<>(repository.findAll());
         return resultList.stream().map(user -> dtoMapper.userToDto(user)).toList();
     }
 

@@ -15,6 +15,7 @@ ALTER TABLE posts_likes
 
 
 CREATE TABLE posts_comments (
+    id int  PRIMARY KEY AUTO_INCREMENT NOT NULL,
     post_id int NOT NULL,
     user_id int NOT NULL,
     comment_body varchar(200) NOT NULL

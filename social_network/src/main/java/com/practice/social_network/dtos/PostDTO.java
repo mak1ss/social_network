@@ -1,6 +1,5 @@
 package com.practice.social_network.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +13,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostDTO {
-
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private int id;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -25,4 +24,9 @@ public class PostDTO {
 
     private String postBody;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private int likesAmount;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private int comments;
 }

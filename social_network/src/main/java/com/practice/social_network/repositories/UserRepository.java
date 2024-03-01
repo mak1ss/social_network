@@ -15,7 +15,10 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<User, Integer>, JpaRepository<User, Integer> {
 
     @Modifying
-    @Query("DELETE FROM User u WHERE u.fullName = 'test_name'")
+    @Query("""
+            DELETE FROM User u
+            WHERE u.fullName = 'test_name'
+            """)
     void deleteTestRows();
 
     User deleteById(int userId);
@@ -23,6 +26,10 @@ public interface UserRepository extends CrudRepository<User, Integer>, JpaReposi
     Optional<User> findUserByEmail(String email);
 
     @Modifying
-    @Query("UPDATE User u SET u.password = :newPassword WHERE u.id = :userId")
+    @Query("""
+            UPDATE User u
+            SET u.password = :newPassword
+            WHERE u.id = :userId
+            """)
     void updatePassword(int userId, String newPassword);
 }
