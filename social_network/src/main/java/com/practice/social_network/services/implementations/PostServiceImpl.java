@@ -100,14 +100,14 @@ public class PostServiceImpl implements PostService {
         }
 
         User user = userOptional.get();
-
-        if (!user.getLikedPosts().contains(postToLike.get())) {
-            user.getLikedPosts().add(postToLike.get());
+        Post post = postToLike.get();
+        if (!post.getLikes().contains(user)) {
+            post.getLikes().add(user);
         } else {
-            user.getLikedPosts().remove(postToLike.get());
+            post.getLikes().remove(user);
         }
 
-        userRepository.save(user);
+        postRepository.save(post);
 
         return dtoMapper.postToDto(postRepository.findById(postId).get());
     }

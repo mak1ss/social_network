@@ -33,8 +33,12 @@ public class Post {
     @Column(name = "post_body")
     private String postBody;
 
-    @ManyToMany(mappedBy = "likedPosts")
-    @Lazy
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name ="posts_likes",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name="user_id")
+    )
     private Set<User> likes = new HashSet<>();
 
     @OneToMany(mappedBy = "post")
