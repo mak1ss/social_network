@@ -1,0 +1,32 @@
+services:
+  social_network_mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_USER=admin
+      - MYSQL_ROOT_PASSWORD=070809az
+      - MYSQL_DATABASE=social_network_db
+    volumes:
+      - social_network_db:/var/lib/mysql
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  social_network:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      social_network_mysql:
+        condition: service_healthy
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  social_network_db:
