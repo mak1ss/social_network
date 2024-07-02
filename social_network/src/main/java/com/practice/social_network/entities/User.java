@@ -43,12 +43,7 @@ public class User {
     )
     private Set<User> followings = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name ="posts_likes",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name="post_id")
-    )
+    @ManyToMany(mappedBy = "likes")
     private Set<Post> likedPosts = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
