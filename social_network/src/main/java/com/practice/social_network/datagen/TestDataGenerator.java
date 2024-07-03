@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -93,7 +95,7 @@ public class TestDataGenerator {
         Post post1 = new Post();
         post1.setUser(user1);
         setDefaultPostBody(post1);
-        post1.setCreationDate(new Timestamp(new Date().getTime()));
+        post1.setCreationDate(LocalDateTime.now());
         post1.setLikes(Collections.asSet(user2, user3));
 
         postRepository.save(post1);
@@ -103,7 +105,7 @@ public class TestDataGenerator {
         Post post2 = new Post();
         post2.setUser(user2);
         setDefaultPostBody(post2);
-        post2.setCreationDate(new Timestamp(new Date().getTime()));
+        post2.setCreationDate(LocalDateTime.now());
         post2.setLikes(Collections.asSet(user1, user3));
 
         postRepository.save(post2);
@@ -113,7 +115,7 @@ public class TestDataGenerator {
         Post post3 = new Post();
         post3.setUser(user3);
         setDefaultPostBody(post3);
-        post3.setCreationDate(new Timestamp(new Date().getTime()));
+        post3.setCreationDate(LocalDateTime.now());
         post3.setLikes(Collections.asSet(user1, user2));
 
         postRepository.save(post3);

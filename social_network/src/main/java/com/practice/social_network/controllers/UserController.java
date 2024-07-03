@@ -1,6 +1,7 @@
 package com.practice.social_network.controllers;
 
-import com.practice.social_network.dtos.UserDTO;
+import com.practice.social_network.dtos.user.ChangePasswordRequest;
+import com.practice.social_network.dtos.user.UserRequest;
 import com.practice.social_network.services.intefaces.UserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -23,33 +24,33 @@ public class UserController {
     }
 
     @GetMapping(path = "/all")
-    public List<UserDTO> getAllUsers() {
+    public List<UserRequest> getAllUsers() {
         return service.getAllUsers();
     }
 
     @PostMapping
-    public UserDTO createUser(@RequestBody UserDTO user) {
+    public UserRequest createUser(@RequestBody UserRequest user) {
         return service.createUser(user);
     }
 
     @PutMapping(path = "/{userId}")
-    public UserDTO updateUser(@PathVariable int userId, @RequestBody UserDTO user) {
+    public UserRequest updateUser(@PathVariable int userId, @RequestBody UserRequest user) {
         user.setId(userId);
         return service.updateUser(user);
     }
 
     @DeleteMapping(path = "/{userId}")
-    public UserDTO deleteUser(@PathVariable int userId) {
+    public UserRequest deleteUser(@PathVariable int userId) {
         return service.deleteUser(userId);
     }
 
     @PutMapping(path = "/{userId}/follow/")
-    public UserDTO followToUser(@PathVariable int userId, @RequestParam(name = "userToFollow") int userToFollowId) {
+    public UserRequest followToUser(@PathVariable int userId, @RequestParam(name = "userToFollow") int userToFollowId) {
         return service.followToUser(userId, userToFollowId);
     }
 
     @PutMapping(path = "/new-password")
-    public UserDTO changePassword(@RequestParam(name = "userId") int userId, @RequestParam(name = "newPassword") String newPassword){
+    public UserRequest changePassword(@RequestParam(name = "userId") int userId, @RequestBody ChangePasswordRequest changePasswordRequest){
         return service.changeUserPassword(userId, newPassword);
     }
 }

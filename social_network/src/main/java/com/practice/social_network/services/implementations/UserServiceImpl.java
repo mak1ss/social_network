@@ -1,9 +1,9 @@
 package com.practice.social_network.services.implementations;
 
-import com.practice.social_network.dtos.UserDTO;
+import com.practice.social_network.dtos.user.UserRequest;
 import com.practice.social_network.entities.User;
+import com.practice.social_network.mappers.user.UserDTOMapper;
 import com.practice.social_network.repositories.UserRepository;
-import com.practice.social_network.services.intefaces.mappers.UserDTOMapper;
 import com.practice.social_network.services.intefaces.UserService;
 
 import org.mapstruct.factory.Mappers;
@@ -33,13 +33,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO createUser(UserDTO user) throws DataIntegrityViolationException {
+    public UserRequest createUser(UserRequest user) throws DataIntegrityViolationException {
         user.setPassword(passEncoder.encode(user.getPassword()));
         return dtoMapper.userToDto(repository.save(dtoMapper.dtoToUser(user)));
     }
 
     @Override
-    public UserDTO updateUser(UserDTO user) throws DataIntegrityViolationException, IllegalArgumentException {
+    public UserRequest updateUser(UserRequest user) throws DataIntegrityViolationException, IllegalArgumentException {
         if (!repository.existsById(user.getId())) {
             throw new IllegalArgumentException("Wrong user ID");
         }
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO deleteUser(int userId) throws IllegalArgumentException {
+    public UserRequest deleteUser(int userId) throws IllegalArgumentException {
         if (!repository.existsById(userId)) {
             throw new IllegalArgumentException("Wrong user ID");
         }
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO followToUser(int userId, int userToFollowId) throws IllegalArgumentException {
+    public UserRequest followToUser(int userId, int userToFollowId) throws IllegalArgumentException {
         Optional<User> followingUser = repository.findById(userId);
         Optional<User> userToFollow = repository.findById(userToFollowId);
         if (followingUser.isEmpty() || userToFollow.isEmpty()) {
@@ -68,13 +68,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getAllUsers() {
+    public List<UserRequest> getAllUsers() {
         List<User> resultList = new ArrayList<>(repository.findAll());
         return resultList.stream().map(user -> dtoMapper.userToDto(user)).toList();
     }
 
     @Override
-    public UserDTO changeUserPassword(int userId, String newPassword) {
+    public UserRequest changeUserPassword(int userId, String newPassword) {
         if(!repository.existsById(userId)){
             throw new IllegalArgumentException("Wrong user ID");
         }

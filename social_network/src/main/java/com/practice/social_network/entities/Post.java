@@ -1,18 +1,15 @@
 package com.practice.social_network.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "posts")
@@ -28,7 +25,7 @@ public class Post {
 
     @Column(name = "creation_date")
     @CreatedDate
-    private Timestamp creationDate;
+    private LocalDateTime creationDate;
 
     @Column(name = "post_body")
     private String postBody;
@@ -42,17 +39,5 @@ public class Post {
     private Set<User> likes = new HashSet<>();
 
     @OneToMany(mappedBy = "post")
-    @Lazy
     Set<PostComment> comments = new HashSet<>();
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user, boolean isPostSetted) {
-        this.user = user;
-        if (!isPostSetted) {
-            user.addPost(this, true);
-        }
-    }
 }

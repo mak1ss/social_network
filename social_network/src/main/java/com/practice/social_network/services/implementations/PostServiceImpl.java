@@ -1,16 +1,16 @@
 package com.practice.social_network.services.implementations;
 
-import com.practice.social_network.dtos.PostCommentDTO;
-import com.practice.social_network.dtos.PostDTO;
+import com.practice.social_network.dtos.postComment.PostCommentRequest;
+import com.practice.social_network.dtos.post.PostRequest;
 import com.practice.social_network.entities.Post;
 import com.practice.social_network.entities.PostComment;
 import com.practice.social_network.entities.User;
 
+import com.practice.social_network.mappers.post.PostDTOMapper;
 import com.practice.social_network.repositories.CommentRepository;
 import com.practice.social_network.repositories.UserRepository;
 import com.practice.social_network.services.intefaces.PostService;
 import com.practice.social_network.repositories.PostRepository;
-import com.practice.social_network.services.intefaces.mappers.PostDTOMapper;
 
 import org.mapstruct.factory.Mappers;
 
@@ -40,18 +40,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO createPost(PostDTO post, int userId) throws IllegalArgumentException {
+    public PostRequest createPost(PostRequest post, int userId) throws IllegalArgumentException {
         Optional<User> userById = userRepository.findById(userId);
         if (userById.isEmpty()) {
             throw new IllegalArgumentException("Wrong user ID");
         }
         Post postEntity = dtoMapper.dtoToPost(post);
-        postEntity.setUser(userById.get(), false);
+        postEntity.setUser(userById.get());
         return dtoMapper.postToDto(postRepository.save(postEntity));
     }
 
     @Override
-    public PostDTO updatePost(PostDTO post, int userId) throws IllegalArgumentException {
+    public PostRequest updatePost(PostRequest post, int userId) throws IllegalArgumentException {
         boolean isUserEmpty = !userRepository.existsById(userId);
         boolean isPostEmpty = !postRepository.existsById(post.getId());
         if (isUserEmpty || isPostEmpty) {
@@ -63,7 +63,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO deletePost(int postId, int userId) throws IllegalArgumentException {
+    public PostRequest deletePost(int postId, int userId) throws IllegalArgumentException {
         boolean isUserEmpty = !userRepository.existsById(userId);
         boolean isPostEmpty = !postRepository.existsById(postId);
         if (isUserEmpty || isPostEmpty) {
@@ -73,7 +73,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDTO> getUserPosts(int userId) throws IllegalArgumentException {
+    public List<PostRequest> getUserPosts(int userId) throws IllegalArgumentException {
         if (!userRepository.existsById(userId)) {
             throw new IllegalArgumentException("Wrong user ID");
         }
@@ -81,7 +81,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDTO> getFriendsPosts(int userId, int pageNumber) throws IllegalArgumentException {
+    public List<PostRequest> getFriendsPosts(int userId, int pageNumber) throws IllegalArgumentException {
         if (!userRepository.existsById(userId)) {
             throw new IllegalArgumentException("Wrong user ID");
         }
@@ -91,7 +91,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO likePost(int userId, int postId) throws IllegalArgumentException {
+    public PostRequest likePost(int userId, int postId) throws IllegalArgumentException {
         Optional<User> userOptional = userRepository.findById(userId);
         Optional<Post> postToLike = postRepository.findById(postId);
 
@@ -113,7 +113,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO leaveComment(String comment, int postId, int userId) {
+    public PostRequest leaveComment(String comment, int postId, int userId) {
         Optional<User> userOptional = userRepository.findById(userId);
         Optional<Post> postOptional = postRepository.findById(postId);
 
@@ -133,7 +133,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostCommentDTO> getPostComments(int postId, int pageNumber) {
+    public List<PostCommentRequest> getPostComments(int postId, int pageNumber) {
         if(!postRepository.existsById(postId)){
             throw new IllegalArgumentException("Wrong post ID");
         }
