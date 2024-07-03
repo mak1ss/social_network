@@ -15,5 +15,5 @@ spring:
       on-profile: prod
   datasource:
     url: jdbc:mysql://social_network_mysql/social_network_db
-    username: admin
+    username: root
     password: 070809az

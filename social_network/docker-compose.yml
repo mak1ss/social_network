@@ -2,7 +2,6 @@ services:
   social_network_mysql:
     image: mysql:8.0
     environment:
-      - MYSQL_USER=admin
       - MYSQL_ROOT_PASSWORD=070809az
       - MYSQL_DATABASE=social_network_db
     volumes:
