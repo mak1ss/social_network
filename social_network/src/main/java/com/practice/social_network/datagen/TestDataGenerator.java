@@ -8,7 +8,6 @@ import com.practice.social_network.repositories.PostRepository;
 import com.practice.social_network.repositories.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
-import org.mapstruct.ap.internal.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Set;
 
 @AllArgsConstructor
 @Service
@@ -59,7 +59,7 @@ public class TestDataGenerator {
         user2.setNickname("mak1s");
         user2.setEmail("maks@gmail.com");
         user2.setPassword(passwordEncoder.encode("qwerty"));
-        user2.addFollowing(user1); // user 2 follows user 1
+
         userRepository.save(user2);
         log.info("Saved user: " + user2);
 
@@ -94,7 +94,7 @@ public class TestDataGenerator {
         post1.setUser(user1);
         setDefaultPostBody(post1);
         post1.setCreationDate(new Timestamp(new Date().getTime()));
-        post1.setLikes(Collections.asSet(user2, user3));
+        post1.setLikes(Set.of(user2, user3));
 
         postRepository.save(post1);
         log.info("Saved post: " + post1);
@@ -104,7 +104,7 @@ public class TestDataGenerator {
         post2.setUser(user2);
         setDefaultPostBody(post2);
         post2.setCreationDate(new Timestamp(new Date().getTime()));
-        post2.setLikes(Collections.asSet(user1, user3));
+        post2.setLikes(Set.of(user1, user3));
 
         postRepository.save(post2);
         log.info("Saved post: " + post2);
@@ -114,7 +114,7 @@ public class TestDataGenerator {
         post3.setUser(user3);
         setDefaultPostBody(post3);
         post3.setCreationDate(new Timestamp(new Date().getTime()));
-        post3.setLikes(Collections.asSet(user1, user2));
+        post3.setLikes(Set.of(user1, user2));
 
         postRepository.save(post3);
         log.info("Saved post: " + post3);
