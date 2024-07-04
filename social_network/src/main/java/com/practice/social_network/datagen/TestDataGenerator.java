@@ -23,7 +23,6 @@ import java.util.Date;
 @Service
 public class TestDataGenerator {
     private static final Logger log = LoggerFactory.getLogger(TestDataGenerator.class);
-    private static final Integer DEFAULT_USER_ID = 1;
 
     private UserRepository userRepository;
     private PostRepository postRepository;
@@ -40,7 +39,7 @@ public class TestDataGenerator {
 
     @PostConstruct
     private void initializeDbWIthTestData() {
-        if (userRepository.findById(DEFAULT_USER_ID).isPresent()) {
+        if (!userRepository.findAll().isEmpty()) {
             log.info("Skipped data generation. There is already data present in the database");
             return;
         }

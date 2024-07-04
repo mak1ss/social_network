@@ -2,7 +2,9 @@ package com.practice.social_network.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.apache.commons.lang3.builder.EqualsExclude;
 import org.apache.commons.lang3.builder.HashCodeExclude;
 import org.apache.commons.lang3.builder.ToStringExclude;
@@ -19,7 +21,7 @@ import java.util.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "full_name", length = 100)
     private String fullName;
@@ -39,9 +41,8 @@ public class User {
             joinColumns = @JoinColumn(name = "following_user_id"),
             inverseJoinColumns = @JoinColumn(name = "followed_user_id")
     )
-    @ToStringExclude
-    @EqualsExclude
-    @HashCodeExclude
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<User> followings = new HashSet<>();
 
     public void addFollowing(User newFollowing) {

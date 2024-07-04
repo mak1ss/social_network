@@ -1,12 +1,12 @@
 package com.practice.social_network.dtos.user;
 
+import com.practice.social_network.dtos.AbstractRequest;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-
+@EqualsAndHashCode(callSuper = true)
 @Data
-@NoArgsConstructor
-public class UserRequest {
+public class UserRequest extends AbstractRequest {
 
     @NotBlank
     private String fullName;

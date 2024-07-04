@@ -1,5 +1,6 @@
 package com.practice.social_network.dtos.post;
 
+import com.practice.social_network.dtos.AbstractRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -7,13 +8,12 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-@NoArgsConstructor
-public class PostRequest {
+public class PostRequest extends AbstractRequest {
 
     private Integer userId;
 
-    @NotNull
     private LocalDateTime creationDate;
 
     @NotBlank

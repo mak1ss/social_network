@@ -1,0 +1,18 @@
+package com.practice.social_network.mappers;
+
+
+import com.practice.social_network.dtos.AbstractRequest;
+import com.practice.social_network.dtos.AbstractResponse;
+
+import java.util.Collection;
+import java.util.List;
+
+public interface Mapper<T, ResponseType extends AbstractResponse, RequestType extends AbstractRequest> {
+
+    T requestToEntity(RequestType request);
+
+    ResponseType entityToResponse(T entity);
+
+    List<ResponseType> entitiesToListResponse(Collection<T> entityList);
+
+}

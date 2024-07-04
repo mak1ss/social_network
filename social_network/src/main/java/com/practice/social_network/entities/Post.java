@@ -17,7 +17,7 @@ import java.util.*;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)

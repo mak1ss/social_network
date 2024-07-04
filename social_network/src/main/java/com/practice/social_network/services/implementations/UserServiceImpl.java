@@ -1,13 +1,14 @@
 package com.practice.social_network.services.implementations;
 
+import com.practice.social_network.dtos.user.ChangePasswordRequest;
 import com.practice.social_network.dtos.user.UserRequest;
+import com.practice.social_network.dtos.user.UserResponse;
 import com.practice.social_network.entities.User;
-import com.practice.social_network.mappers.user.UserDTOMapper;
+import com.practice.social_network.mappers.UserMapper;
 import com.practice.social_network.repositories.UserRepository;
 import com.practice.social_network.services.intefaces.UserService;
 
-import org.mapstruct.factory.Mappers;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,68 +18,71 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private UserRepository repository;
 
     private PasswordEncoder passEncoder;
 
-    private UserDTOMapper dtoMapper;
-
-    @Autowired
-    public UserServiceImpl(UserRepository repository, PasswordEncoder passEncoder) {
-        this.repository = repository;
-        this.passEncoder = passEncoder;
-        this.dtoMapper = Mappers.getMapper(UserDTOMapper.class);
-    }
+    private UserMapper userMapper;
 
     @Override
-    public UserRequest createUser(UserRequest user) throws DataIntegrityViolationException {
+    public UserResponse createUser(UserRequest user) throws DataIntegrityViolationException {
         user.setPassword(passEncoder.encode(user.getPassword()));
-        return dtoMapper.userToDto(repository.save(dtoMapper.dtoToUser(user)));
+        return userMapper.entityToResponse(repository.save(userMapper.requestToEntity(user)));
     }
 
     @Override
-    public UserRequest updateUser(UserRequest user) throws DataIntegrityViolationException, IllegalArgumentException {
+    public UserResponse updateUser(UserRequest user) throws DataIntegrityViolationException, IllegalArgumentException {
         if (!repository.existsById(user.getId())) {
             throw new IllegalArgumentException("Wrong user ID");
         }
-        User userEntity = repository.findById(user.getId()).get();
-        dtoMapper.updateUserFromDto(user, userEntity);
-        return dtoMapper.userToDto(repository.save(userEntity));
+        User userEntity = userMapper.requestToEntity(user);
+        return userMapper.entityToResponse(repository.save(userEntity));
     }
 
     @Override
-    public UserRequest deleteUser(int userId) throws IllegalArgumentException {
+    public void deleteUser(Integer userId) throws IllegalArgumentException {
         if (!repository.existsById(userId)) {
             throw new IllegalArgumentException("Wrong user ID");
         }
-        return dtoMapper.userToDto(repository.deleteById(userId));
+
+        repository.deleteById(userId);
     }
 
     @Override
-    public UserRequest followToUser(int userId, int userToFollowId) throws IllegalArgumentException {
+    public UserResponse followToUser(Integer userId, Integer userToFollowId) throws IllegalArgumentException {
         Optional<User> followingUser = repository.findById(userId);
         Optional<User> userToFollow = repository.findById(userToFollowId);
         if (followingUser.isEmpty() || userToFollow.isEmpty()) {
             throw new IllegalArgumentException("Wrong user ID");
         }
         followingUser.get().addFollowing(userToFollow.get());
-        return dtoMapper.userToDto(repository.save(followingUser.get()));
+        return userMapper.entityToResponse(repository.save(followingUser.get()));
     }
 
     @Override
-    public List<UserRequest> getAllUsers() {
+    public List<UserResponse> getAllUsers() {
         List<User> resultList = new ArrayList<>(repository.findAll());
-        return resultList.stream().map(user -> dtoMapper.userToDto(user)).toList();
+        return resultList.stream().map(user -> userMapper.entityToResponse(user)).toList();
     }
 
     @Override
-    public UserRequest changeUserPassword(int userId, String newPassword) {
-        if(!repository.existsById(userId)){
+    public UserResponse changeUserPassword(Integer userId, ChangePasswordRequest changeRequest) {
+        if (!repository.existsById(userId)) {
             throw new IllegalArgumentException("Wrong user ID");
         }
-        repository.updatePassword(userId, passEncoder.encode(newPassword));
-        return dtoMapper.userToDto(repository.findById(userId).get());
+
+        if (isPasswordsMatch(changeRequest.getOldPassword(), changeRequest.getNewPassword())) {
+            repository.updatePassword(userId, passEncoder.encode(changeRequest.getNewPassword()));
+            return userMapper.entityToResponse(repository.findById(userId).get());
+        }
+
+        throw new IllegalArgumentException("Wrong password");
+    }
+
+    public boolean isPasswordsMatch(String oldPassword, String newPassword) {
+        return passEncoder.matches(oldPassword, newPassword);
     }
 }

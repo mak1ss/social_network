@@ -1,19 +1,20 @@
 package com.practice.social_network.services.implementations;
 
-import com.practice.social_network.dtos.postComment.PostCommentRequest;
+import com.practice.social_network.dtos.post.PostResponse;
 import com.practice.social_network.dtos.post.PostRequest;
+import com.practice.social_network.dtos.postComment.PostCommentResponse;
 import com.practice.social_network.entities.Post;
 import com.practice.social_network.entities.PostComment;
 import com.practice.social_network.entities.User;
 
-import com.practice.social_network.mappers.post.PostDTOMapper;
+import com.practice.social_network.mappers.PostCommentMapper;
+import com.practice.social_network.mappers.PostMapper;
 import com.practice.social_network.repositories.CommentRepository;
 import com.practice.social_network.repositories.UserRepository;
 import com.practice.social_network.services.intefaces.PostService;
 import com.practice.social_network.repositories.PostRepository;
 
-import org.mapstruct.factory.Mappers;
-
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -23,75 +24,68 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class PostServiceImpl implements PostService {
 
-    private PostDTOMapper dtoMapper;
     private UserRepository userRepository;
     private PostRepository postRepository;
-
     private CommentRepository commentRepository;
 
-    @Autowired
-    public PostServiceImpl(UserRepository userRepository, PostRepository postRepository, CommentRepository commentRepository) {
-        this.dtoMapper = Mappers.getMapper(PostDTOMapper.class);
-        this.userRepository = userRepository;
-        this.postRepository = postRepository;
-        this.commentRepository = commentRepository;
-    }
+    private PostMapper postMapper;
+    private PostCommentMapper commentMapper;
 
     @Override
-    public PostRequest createPost(PostRequest post, int userId) throws IllegalArgumentException {
-        Optional<User> userById = userRepository.findById(userId);
+    public PostResponse createPost(PostRequest post) throws IllegalArgumentException {
+        Optional<User> userById = userRepository.findById(post.getUserId());
         if (userById.isEmpty()) {
             throw new IllegalArgumentException("Wrong user ID");
         }
-        Post postEntity = dtoMapper.dtoToPost(post);
+        Post postEntity = postMapper.requestToEntity(post);
         postEntity.setUser(userById.get());
-        return dtoMapper.postToDto(postRepository.save(postEntity));
+        return postMapper.entityToResponse(postRepository.save(postEntity));
     }
 
     @Override
-    public PostRequest updatePost(PostRequest post, int userId) throws IllegalArgumentException {
-        boolean isUserEmpty = !userRepository.existsById(userId);
+    public PostResponse updatePost(PostRequest post) throws IllegalArgumentException {
+        boolean isUserEmpty = !userRepository.existsById(post.getUserId());
         boolean isPostEmpty = !postRepository.existsById(post.getId());
         if (isUserEmpty || isPostEmpty) {
             throw new IllegalArgumentException("Wrong user ID or post ID");
         }
-        postRepository.updatePost(post.getPostBody(), post.getId(), userId);
+        postRepository.updatePost(post.getPostBody(), post.getId(), post.getUserId());
 
-        return dtoMapper.postToDto(postRepository.findById(post.getId()).get());
+        return postMapper.entityToResponse(postRepository.findById(post.getId()).get());
     }
 
     @Override
-    public PostRequest deletePost(int postId, int userId) throws IllegalArgumentException {
-        boolean isUserEmpty = !userRepository.existsById(userId);
+    public PostResponse deletePost(Integer postId) throws IllegalArgumentException {
         boolean isPostEmpty = !postRepository.existsById(postId);
-        if (isUserEmpty || isPostEmpty) {
+        if (isPostEmpty) {
             throw new IllegalArgumentException("Wrong user ID or post ID");
         }
-        return dtoMapper.postToDto(postRepository.deleteById(postId));
+        return postMapper.entityToResponse(postRepository.deleteById(postId));
     }
 
     @Override
-    public List<PostRequest> getUserPosts(int userId) throws IllegalArgumentException {
+    public List<PostResponse> getUserPosts(Integer userId) throws IllegalArgumentException {
         if (!userRepository.existsById(userId)) {
             throw new IllegalArgumentException("Wrong user ID");
         }
-        return postRepository.getPostsByUserId(userId).stream().map(dtoMapper::postToDto).toList();
+        return postRepository.getPostsByUserId(userId).stream().map(postMapper::entityToResponse).toList();
     }
 
     @Override
-    public List<PostRequest> getFriendsPosts(int userId, int pageNumber) throws IllegalArgumentException {
+    public List<PostResponse> getFriendsPosts(Integer userId, Integer pageNumber) throws IllegalArgumentException {
         if (!userRepository.existsById(userId)) {
             throw new IllegalArgumentException("Wrong user ID");
         }
         List<Post> list = postRepository.getFriendsPosts(userId, PageRequest.of(pageNumber, 10));
         return list
-                .stream().map(dtoMapper::postToDto).toList();
+                .stream().map(postMapper::entityToResponse).toList();
     }
 
     @Override
-    public PostRequest likePost(int userId, int postId) throws IllegalArgumentException {
+    public PostResponse likePost(Integer userId, Integer postId) throws IllegalArgumentException {
         Optional<User> userOptional = userRepository.findById(userId);
         Optional<Post> postToLike = postRepository.findById(postId);
 
@@ -109,40 +103,7 @@ public class PostServiceImpl implements PostService {
 
         postRepository.save(post);
 
-        return dtoMapper.postToDto(postRepository.findById(postId).get());
+        return postMapper.entityToResponse(postRepository.findById(postId).get());
     }
-
-    @Override
-    public PostRequest leaveComment(String comment, int postId, int userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        Optional<Post> postOptional = postRepository.findById(postId);
-
-        if (userOptional.isEmpty() || postOptional.isEmpty()) {
-            throw new IllegalArgumentException("Wrong user ID or post ID");
-        }
-
-        Post post = postOptional.get();
-
-        PostComment postComment = new PostComment();
-        postComment.setPost(post);
-        postComment.setUser(userOptional.get());
-        postComment.setCommentBody(comment);
-
-        commentRepository.save(postComment);
-        return dtoMapper.postToDto(postRepository.findById(post.getId()).get());
-    }
-
-    @Override
-    public List<PostCommentRequest> getPostComments(int postId, int pageNumber) {
-        if(!postRepository.existsById(postId)){
-            throw new IllegalArgumentException("Wrong post ID");
-        }
-
-
-        return commentRepository.findByPostId(postId, PageRequest.of(pageNumber, 5)).orElseThrow()
-                .stream()
-                .map(dtoMapper::commentToDto).toList();
-    }
-
 
 }
