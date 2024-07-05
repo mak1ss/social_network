@@ -4,7 +4,7 @@ import com.practice.social_network.dtos.postComment.PostCommentRequest;
 import com.practice.social_network.dtos.postComment.PostCommentResponse;
 import com.practice.social_network.entities.PostComment;
 import com.practice.social_network.mappers.PostCommentMapper;
-import com.practice.social_network.repositories.CommentRepository;
+import com.practice.social_network.repositories.PostCommentRepository;
 import com.practice.social_network.repositories.PostRepository;
 import com.practice.social_network.services.intefaces.PostCommentService;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PostCommentServiceImpl implements PostCommentService {
 
-    private CommentRepository commentRepository;
+    private PostCommentRepository commentRepository;
     private PostRepository postRepository;
     private PostCommentMapper mapper;
 

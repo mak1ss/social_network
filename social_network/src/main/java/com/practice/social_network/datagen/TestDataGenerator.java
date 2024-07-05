@@ -3,7 +3,7 @@ package com.practice.social_network.datagen;
 import com.practice.social_network.entities.Post;
 import com.practice.social_network.entities.PostComment;
 import com.practice.social_network.entities.User;
-import com.practice.social_network.repositories.CommentRepository;
+import com.practice.social_network.repositories.PostCommentRepository;
 import com.practice.social_network.repositories.PostRepository;
 import com.practice.social_network.repositories.UserRepository;
 import jakarta.annotation.PostConstruct;
@@ -23,7 +23,7 @@ public class TestDataGenerator {
 
     private UserRepository userRepository;
     private PostRepository postRepository;
-    private CommentRepository commentRepository;
+    private PostCommentRepository commentRepository;
     private PasswordEncoder passwordEncoder;
 
     private void setDefaultPostBody(Post post) {
@@ -122,6 +122,7 @@ public class TestDataGenerator {
         comment1.setUser(user2);
         comment1.setCommentBody("Hi there from " + user2.getNickname());
         comment1.setPost(post1);
+        comment1.setCreationDate(LocalDateTime.now());
 
         commentRepository.save(comment1);
         log.info("Saved comment for post " + comment1.getPost().getId() + ": " + comment1);
@@ -131,6 +132,7 @@ public class TestDataGenerator {
         comment2.setUser(user3);
         comment2.setCommentBody("Hi there from " + user3.getNickname());
         comment2.setPost(post2);
+        comment2.setCreationDate(LocalDateTime.now());
 
         commentRepository.save(comment2);
         log.info("Saved comment for post " + comment2.getPost().getId() + ": " + comment2);
@@ -139,6 +141,7 @@ public class TestDataGenerator {
         comment3.setUser(user1);
         comment3.setCommentBody("Hi there from " + user1.getNickname());
         comment3.setPost(post3);
+        comment3.setCreationDate(LocalDateTime.now());
 
         commentRepository.save(comment3);
         log.info("Saved comment for post " + comment3.getPost().getId() + ": " + comment3);

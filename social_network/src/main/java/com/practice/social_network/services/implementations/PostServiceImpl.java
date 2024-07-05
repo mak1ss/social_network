@@ -7,7 +7,7 @@ import com.practice.social_network.entities.User;
 
 import com.practice.social_network.mappers.PostCommentMapper;
 import com.practice.social_network.mappers.PostMapper;
-import com.practice.social_network.repositories.CommentRepository;
+import com.practice.social_network.repositories.PostCommentRepository;
 import com.practice.social_network.repositories.UserRepository;
 import com.practice.social_network.services.intefaces.PostService;
 import com.practice.social_network.repositories.PostRepository;
@@ -26,7 +26,7 @@ public class PostServiceImpl implements PostService {
 
     private UserRepository userRepository;
     private PostRepository postRepository;
-    private CommentRepository commentRepository;
+    private PostCommentRepository commentRepository;
 
     private PostMapper postMapper;
     private PostCommentMapper commentMapper;

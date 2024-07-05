@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Transactional
 @Repository
-public interface CommentRepository extends PagingAndSortingRepository<PostComment, Integer>, CrudRepository<PostComment, Integer> {
+public interface PostCommentRepository extends PagingAndSortingRepository<PostComment, Integer>, CrudRepository<PostComment, Integer> {
 
     Optional<List<PostComment>> findByPostId(int postId, Pageable pageable);
 }

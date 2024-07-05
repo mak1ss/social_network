@@ -36,12 +36,9 @@ public class PostController {
         return service.createPost(post);
     }
 
-    @PutMapping(path = "/{postId}")
-    public PostResponse updatePost(@PathVariable Integer postId, @RequestParam String newPostBody) {
-        PostRequest dto = new PostRequest();
-        dto.setId(postId);
-        dto.setPostBody(newPostBody);
-        return service.updatePost(dto);
+    @PutMapping
+    public PostResponse updatePost(@RequestBody PostRequest request) {
+        return service.updatePost(request);
     }
 
     @DeleteMapping(path="/{postId}")
