@@ -6,6 +6,9 @@ import com.practice.social_network.services.intefaces.PostService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -41,9 +44,10 @@ public class PostController {
         return service.updatePost(dto);
     }
 
-    @DeleteMapping
-    public PostResponse deletePost(@RequestParam Integer postId) {
-        return service.deletePost(postId);
+    @DeleteMapping(path="/{postId}")
+    public ResponseEntity<Object> deletePost(@PathVariable Integer postId) {
+        service.deletePost(postId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping(path = "/{userId}/news")

@@ -1,6 +1,7 @@
 package com.practice.social_network.dtos.user;
 
 import com.practice.social_network.dtos.AbstractRequest;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -15,6 +16,7 @@ public class UserRequest extends AbstractRequest {
     private String nickname;
 
     @NotBlank
+    @Email
     private String email;
     private String password;
 

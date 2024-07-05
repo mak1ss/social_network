@@ -55,12 +55,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse deletePost(Integer postId) throws IllegalArgumentException {
-        boolean isPostEmpty = !postRepository.existsById(postId);
-        if (isPostEmpty) {
-            throw new IllegalArgumentException("Wrong user ID or post ID");
+    public void deletePost(Integer postId) throws IllegalArgumentException {
+        if(!postRepository.existsById(postId)) {
+            throw new IllegalArgumentException("Wrong post ID");
         }
-        return postMapper.entityToResponse(postRepository.deleteById(postId));
+        postRepository.deleteById(postId);
     }
 
     @Override

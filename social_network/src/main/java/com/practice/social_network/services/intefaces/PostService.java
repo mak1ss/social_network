@@ -11,7 +11,7 @@ public interface PostService {
 
     PostResponse updatePost(PostRequest post) throws IllegalArgumentException;
 
-    PostResponse deletePost(Integer postId) throws IllegalArgumentException;
+    void deletePost(Integer postId) throws IllegalArgumentException;
 
     List<PostResponse> getUserPosts(Integer userId) throws IllegalArgumentException;
 
