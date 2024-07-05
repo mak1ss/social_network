@@ -2,7 +2,6 @@ package com.practice.social_network.dtos.post;
 
 import com.practice.social_network.dtos.AbstractRequest;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 

@@ -2,7 +2,6 @@ package com.practice.social_network.controllers;
 
 import com.practice.social_network.dtos.post.PostResponse;
 import com.practice.social_network.dtos.post.PostRequest;
-import com.practice.social_network.dtos.postComment.PostCommentResponse;
 import com.practice.social_network.services.intefaces.PostService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

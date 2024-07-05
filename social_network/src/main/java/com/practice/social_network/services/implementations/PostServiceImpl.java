@@ -2,9 +2,7 @@ package com.practice.social_network.services.implementations;
 
 import com.practice.social_network.dtos.post.PostResponse;
 import com.practice.social_network.dtos.post.PostRequest;
-import com.practice.social_network.dtos.postComment.PostCommentResponse;
 import com.practice.social_network.entities.Post;
-import com.practice.social_network.entities.PostComment;
 import com.practice.social_network.entities.User;
 
 import com.practice.social_network.mappers.PostCommentMapper;
@@ -15,7 +13,6 @@ import com.practice.social_network.services.intefaces.PostService;
 import com.practice.social_network.repositories.PostRepository;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 

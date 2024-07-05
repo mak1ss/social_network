@@ -4,7 +4,6 @@ import com.practice.social_network.dtos.AbstractResponse;
 import com.practice.social_network.dtos.user.UserResponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
