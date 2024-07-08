@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,14 +18,14 @@ public class FollowController {
 
     private final FollowService followService;
 
-    @GetMapping("/{followerId}")
-    public List<FollowResponse> getFollows(@PathVariable Integer followerId) {
-        return followService.getUserFollows(followerId);
-    }
-
-    @GetMapping("/{followedId}")
-    public List<FollowResponse> getFollowers(@PathVariable Integer followedId) {
-        return followService.getUserFollowers(followedId);
+    @GetMapping("/{userId}/{type}")
+    public List<FollowResponse> getUserRelationships(@PathVariable Integer userId, @PathVariable RelationshipType type) {
+        List<FollowResponse> entities = new ArrayList<>();
+        switch (type) {
+            case FOLLOWERS -> entities = followService.getUserFollowers(userId);
+            case FOLLOWS -> entities = followService.getUserFollows(userId);
+        }
+        return entities;
     }
 
     @PostMapping

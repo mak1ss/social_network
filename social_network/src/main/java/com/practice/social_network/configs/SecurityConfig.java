@@ -25,7 +25,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             http.authorizeHttpRequests()
                     .requestMatchers(AUTH_WHITE_LIST).permitAll()
-                    .requestMatchers("/posts/**", "/post-comments/**", "/user/**").authenticated()
+                    .requestMatchers("/posts/**", "/post-comments/**", "/user/**", "/user-follow/**").authenticated()
                     .and()
                     .formLogin()
                     .and()

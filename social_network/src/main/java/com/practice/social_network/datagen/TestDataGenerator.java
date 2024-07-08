@@ -99,15 +99,16 @@ public class TestDataGenerator {
         follow3.setSubscriptionDate(LocalDateTime.now());
 
         followRepository.save(follow3);
-        log.info("Saved following of: " + user1);
+        log.info("Saved following : " + user1);
 
         // Following 4
         Follow follow4 = new Follow();
         follow4.setFollower(user3);
         follow4.setFollowed(user1);
+        follow4.setSubscriptionDate(LocalDateTime.now());
 
         followRepository.save(follow4);
-        log.info("Saved following of: " + user1);
+        log.info("Saved following : " + user1);
 
         // Post 1 (owner - user 1, liked by user2 and user3)
         Post post1 = new Post();
