@@ -1,8 +1,8 @@
 package com.practice.social_network.controllers;
 
-import com.practice.social_network.dtos.follow.FollowRequest;
-import com.practice.social_network.dtos.follow.FollowResponse;
-import com.practice.social_network.services.intefaces.FollowService;
+import com.practice.social_network.dtos.userFollow.UserFollowRequest;
+import com.practice.social_network.dtos.userFollow.UserFollowResponse;
+import com.practice.social_network.services.intefaces.UserFollowService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +14,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/user-follow")
 @AllArgsConstructor
-public class FollowController {
+public class UserFollowController {
 
-    private final FollowService followService;
+    private final UserFollowService followService;
 
     @GetMapping("/{userId}/{type}")
-    public List<FollowResponse> getUserRelationships(@PathVariable Integer userId, @PathVariable RelationshipType type) {
-        List<FollowResponse> entities = new ArrayList<>();
+    public List<UserFollowResponse> getUserRelationships(@PathVariable Integer userId, @PathVariable RelationshipType type) {
+        List<UserFollowResponse> entities = new ArrayList<>();
         switch (type) {
             case FOLLOWERS -> entities = followService.getUserFollowers(userId);
             case FOLLOWS -> entities = followService.getUserFollows(userId);
@@ -29,7 +29,7 @@ public class FollowController {
     }
 
     @PostMapping
-    public FollowResponse createFollow(@RequestBody FollowRequest followRequest) {
+    public UserFollowResponse createFollow(@RequestBody UserFollowRequest followRequest) {
         return followService.createFollow(followRequest);
     }
 

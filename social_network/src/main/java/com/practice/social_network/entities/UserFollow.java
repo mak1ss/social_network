@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "followings")
-public class Follow {
+public class UserFollow {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

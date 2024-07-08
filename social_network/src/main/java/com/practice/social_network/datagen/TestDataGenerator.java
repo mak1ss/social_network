@@ -1,10 +1,10 @@
 package com.practice.social_network.datagen;
 
-import com.practice.social_network.entities.Follow;
+import com.practice.social_network.entities.UserFollow;
 import com.practice.social_network.entities.Post;
 import com.practice.social_network.entities.PostComment;
 import com.practice.social_network.entities.User;
-import com.practice.social_network.repositories.FollowRepository;
+import com.practice.social_network.repositories.UserFollowRepository;
 import com.practice.social_network.repositories.PostCommentRepository;
 import com.practice.social_network.repositories.PostRepository;
 import com.practice.social_network.repositories.UserRepository;
@@ -26,7 +26,7 @@ public class TestDataGenerator {
     private UserRepository userRepository;
     private PostRepository postRepository;
     private PostCommentRepository commentRepository;
-    private FollowRepository followRepository;
+    private UserFollowRepository followRepository;
     private PasswordEncoder passwordEncoder;
 
     private void setDefaultPostBody(Post post) {
@@ -75,7 +75,7 @@ public class TestDataGenerator {
         log.info("Saved user: " + user2);
 
         // Follow 1
-        Follow follow1 = new Follow();
+        UserFollow follow1 = new UserFollow();
         follow1.setFollower(user1);
         follow1.setFollowed(user2);
         follow1.setSubscriptionDate(LocalDateTime.now());
@@ -84,7 +84,7 @@ public class TestDataGenerator {
         log.info("Saved following : " + follow1);
 
         // Follow 2
-        Follow follow2 = new Follow();
+        UserFollow follow2 = new UserFollow();
         follow2.setFollower(user2);
         follow2.setFollowed(user1);
         follow2.setSubscriptionDate(LocalDateTime.now());
@@ -93,7 +93,7 @@ public class TestDataGenerator {
         log.info("Saved following : " + follow2);
 
         // Following 3
-        Follow follow3 = new Follow();
+        UserFollow follow3 = new UserFollow();
         follow3.setFollower(user3);
         follow3.setFollowed(user2);
         follow3.setSubscriptionDate(LocalDateTime.now());
@@ -102,7 +102,7 @@ public class TestDataGenerator {
         log.info("Saved following : " + user1);
 
         // Following 4
-        Follow follow4 = new Follow();
+        UserFollow follow4 = new UserFollow();
         follow4.setFollower(user3);
         follow4.setFollowed(user1);
         follow4.setSubscriptionDate(LocalDateTime.now());
