@@ -51,7 +51,7 @@ public class TestDataGenerator {
         user1.setEmail("vasia@gmail.com");
         user1.setPassword(passwordEncoder.encode("qwerty"));
 
-        user1 = userRepository.save(user1);
+        userRepository.save(user1);
         log.info("Saved user: " + user1);
 
         // User 2
@@ -61,7 +61,7 @@ public class TestDataGenerator {
         user2.setEmail("maks@gmail.com");
         user2.setPassword(passwordEncoder.encode("qwerty"));
 
-        user2 = userRepository.save(user2);
+        userRepository.save(user2);
         log.info("Saved user: " + user2);
 
         // User 3
@@ -78,6 +78,7 @@ public class TestDataGenerator {
         Follow follow1 = new Follow();
         follow1.setFollower(user1);
         follow1.setFollowed(user2);
+        follow1.setSubscriptionDate(LocalDateTime.now());
 
         followRepository.save(follow1);
         log.info("Saved following : " + follow1);
@@ -86,6 +87,7 @@ public class TestDataGenerator {
         Follow follow2 = new Follow();
         follow2.setFollower(user2);
         follow2.setFollowed(user1);
+        follow2.setSubscriptionDate(LocalDateTime.now());
 
         followRepository.save(follow2);
         log.info("Saved following : " + follow2);
@@ -94,6 +96,7 @@ public class TestDataGenerator {
         Follow follow3 = new Follow();
         follow3.setFollower(user3);
         follow3.setFollowed(user2);
+        follow3.setSubscriptionDate(LocalDateTime.now());
 
         followRepository.save(follow3);
         log.info("Saved following of: " + user1);
