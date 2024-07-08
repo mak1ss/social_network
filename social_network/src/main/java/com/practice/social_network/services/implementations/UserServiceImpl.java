@@ -59,11 +59,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse changeUserPassword(Integer userId, ChangePasswordRequest changeRequest) {
-        if (!repository.existsById(userId)) {
-            throw new IllegalArgumentException("Wrong user ID");
-        }
+        User entity = repository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException("Wrong user ID")
+        );
 
-        if (isPasswordsMatch(changeRequest.getOldPassword(), changeRequest.getNewPassword())) {
+        if (isPasswordsMatch(changeRequest.getOldPassword(), entity.getPassword())) {
             repository.updatePassword(userId, passEncoder.encode(changeRequest.getNewPassword()));
             return userMapper.entityToResponse(repository.findById(userId).get());
         }
