@@ -72,12 +72,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostResponse> getFriendsPosts(Integer userId, Integer pageNumber) throws IllegalArgumentException {
-        if (!userRepository.existsById(userId)) {
-            throw new IllegalArgumentException("Wrong user ID");
-        }
-        List<Post> list = postRepository.getFriendsPosts(userId, PageRequest.of(pageNumber, 10));
-        return list
-                .stream().map(postMapper::entityToResponse).toList();
+        return null;
     }
 
     @Override

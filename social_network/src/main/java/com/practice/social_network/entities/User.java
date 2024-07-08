@@ -2,13 +2,8 @@ package com.practice.social_network.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.hibernate.annotations.DynamicUpdate;
-
-import java.util.*;
-
 
 @Data
 @NoArgsConstructor
@@ -30,20 +25,4 @@ public class User {
     private String email;
 
     private String password;
-
-    //In this case, collection of followings contains the users, followed by this user instance
-    @ManyToMany
-    @JoinTable(
-            name = "followings",
-            joinColumns = @JoinColumn(name = "following_user_id"),
-            inverseJoinColumns = @JoinColumn(name = "followed_user_id")
-    )
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Set<User> followings = new HashSet<>();
-
-    public void addFollowing(User newFollowing) {
-        this.followings.add(newFollowing);
-    }
-
 }

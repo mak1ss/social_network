@@ -48,13 +48,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PutMapping(path = "/{userId}/follow/")
-    public UserResponse followToUser(@PathVariable Integer userId, @RequestParam(name = "userToFollow") int userToFollowId) {
-        return service.followToUser(userId, userToFollowId);
-    }
-
-    @PutMapping(path = "/new-password")
-    public UserResponse changePassword(@RequestParam(name = "userId") Integer userId, @RequestBody ChangePasswordRequest changePasswordRequest){
+    @PutMapping(path = "/{userId}/new-password")
+    public UserResponse changePassword(@PathVariable Integer userId, @RequestBody ChangePasswordRequest changePasswordRequest){
         return service.changeUserPassword(userId, changePasswordRequest);
     }
 }

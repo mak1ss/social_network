@@ -15,8 +15,6 @@ public interface UserService {
 
     void deleteUser(Integer userId) throws IllegalArgumentException;
 
-    UserResponse followToUser(Integer userId, Integer userToFollowId) throws IllegalArgumentException;
-
     List<UserResponse> getAllUsers();
 
     UserResponse changeUserPassword(Integer userId, ChangePasswordRequest changePasswordRequest);

@@ -21,17 +21,6 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Integer
 
     List<Post> getPostsByUserId(int userId);
 
-    @Query("""
-            SELECT p
-            FROM Post p
-            WHERE p.user IN
-                (SELECT f
-                FROM User u
-                JOIN u.followings f
-                WHERE u.id = :userId)
-            """)
-    List<Post> getFriendsPosts(int userId, Pageable pageable);
-
     @Modifying
     @Query("""
            UPDATE Post post

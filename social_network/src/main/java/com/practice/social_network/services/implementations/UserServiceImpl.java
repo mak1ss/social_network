@@ -52,17 +52,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse followToUser(Integer userId, Integer userToFollowId) throws IllegalArgumentException {
-        Optional<User> followingUser = repository.findById(userId);
-        Optional<User> userToFollow = repository.findById(userToFollowId);
-        if (followingUser.isEmpty() || userToFollow.isEmpty()) {
-            throw new IllegalArgumentException("Wrong user ID");
-        }
-        followingUser.get().addFollowing(userToFollow.get());
-        return userMapper.entityToResponse(repository.save(followingUser.get()));
-    }
-
-    @Override
     public List<UserResponse> getAllUsers() {
         List<User> resultList = new ArrayList<>(repository.findAll());
         return resultList.stream().map(user -> userMapper.entityToResponse(user)).toList();

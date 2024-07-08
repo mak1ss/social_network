@@ -1,8 +1,10 @@
 package com.practice.social_network.datagen;
 
+import com.practice.social_network.entities.Follow;
 import com.practice.social_network.entities.Post;
 import com.practice.social_network.entities.PostComment;
 import com.practice.social_network.entities.User;
+import com.practice.social_network.repositories.FollowRepository;
 import com.practice.social_network.repositories.PostCommentRepository;
 import com.practice.social_network.repositories.PostRepository;
 import com.practice.social_network.repositories.UserRepository;
@@ -24,6 +26,7 @@ public class TestDataGenerator {
     private UserRepository userRepository;
     private PostRepository postRepository;
     private PostCommentRepository commentRepository;
+    private FollowRepository followRepository;
     private PasswordEncoder passwordEncoder;
 
     private void setDefaultPostBody(Post post) {
@@ -48,7 +51,7 @@ public class TestDataGenerator {
         user1.setEmail("vasia@gmail.com");
         user1.setPassword(passwordEncoder.encode("qwerty"));
 
-        userRepository.save(user1);
+        user1 = userRepository.save(user1);
         log.info("Saved user: " + user1);
 
         // User 2
@@ -58,7 +61,7 @@ public class TestDataGenerator {
         user2.setEmail("maks@gmail.com");
         user2.setPassword(passwordEncoder.encode("qwerty"));
 
-        userRepository.save(user2);
+        user2 = userRepository.save(user2);
         log.info("Saved user: " + user2);
 
         // User 3
@@ -72,19 +75,35 @@ public class TestDataGenerator {
         log.info("Saved user: " + user2);
 
         // Follow 1
-        user1.addFollowing(user2);
-        userRepository.save(user1);
-        log.info("Saved following of: " + user1);
+        Follow follow1 = new Follow();
+        follow1.setFollower(user1);
+        follow1.setFollowed(user2);
+
+        followRepository.save(follow1);
+        log.info("Saved following : " + follow1);
 
         // Follow 2
-        user2.addFollowing(user1);
-        userRepository.save(user2);
-        log.info("Saved following of: " + user1);
+        Follow follow2 = new Follow();
+        follow2.setFollower(user2);
+        follow2.setFollowed(user1);
+
+        followRepository.save(follow2);
+        log.info("Saved following : " + follow2);
 
         // Following 3
-        user3.addFollowing(user1); // user 3 follows user 1
-        user3.addFollowing(user2); // user 3 follows user 2
-        userRepository.save(user3);
+        Follow follow3 = new Follow();
+        follow3.setFollower(user3);
+        follow3.setFollowed(user2);
+
+        followRepository.save(follow3);
+        log.info("Saved following of: " + user1);
+
+        // Following 4
+        Follow follow4 = new Follow();
+        follow4.setFollower(user3);
+        follow4.setFollowed(user1);
+
+        followRepository.save(follow4);
         log.info("Saved following of: " + user1);
 
         // Post 1 (owner - user 1, liked by user2 and user3)

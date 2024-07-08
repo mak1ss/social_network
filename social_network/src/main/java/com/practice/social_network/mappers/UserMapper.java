@@ -25,7 +25,6 @@ public class UserMapper implements Mapper<User, UserResponse, UserRequest> {
 
         if(entity.getId() != null) {
             User actualEntity = userRepository.findById(entity.getId()).orElseThrow();
-            entity.setFollowings(actualEntity.getFollowings());
             entity.setPassword(actualEntity.getPassword());
         } else {
             entity.setPassword(request.getPassword());
