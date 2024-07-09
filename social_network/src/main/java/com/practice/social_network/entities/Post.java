@@ -2,6 +2,7 @@ package com.practice.social_network.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -30,9 +31,11 @@ public class Post {
     @Column(name = "post_body")
     private String postBody;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
+    @EqualsAndHashCode.Exclude
     private Set<PostLike> postLikes = new HashSet<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
+    @EqualsAndHashCode.Exclude
     private Set<PostComment> comments = new HashSet<>();
 }

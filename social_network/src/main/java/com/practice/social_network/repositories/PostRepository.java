@@ -17,17 +17,6 @@ import java.util.Optional;
 @Repository
 public interface PostRepository extends PagingAndSortingRepository<Post, Integer>, JpaRepository<Post, Integer> {
 
-    Optional<List<Post>> findByUserId(int userId);
-
-    List<Post> getPostsByUserId(int userId);
-
-    @Modifying
-    @Query("""
-           UPDATE Post post
-           SET post.postBody = ?1
-           WHERE post.id = ?2
-           AND post.user.id = ?3
-           """)
-    void updatePost(String postBody, int postId, int userId);
+    List<Post> getPostsByUserId(Integer userId);
 
 }
