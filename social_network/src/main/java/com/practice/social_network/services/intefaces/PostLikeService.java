@@ -2,7 +2,6 @@ package com.practice.social_network.services.intefaces;
 
 import com.practice.social_network.dtos.postLike.PostLikeRequest;
 import com.practice.social_network.dtos.postLike.PostLikeResponse;
-import com.practice.social_network.entities.PostLike;
 
 import java.util.List;
 

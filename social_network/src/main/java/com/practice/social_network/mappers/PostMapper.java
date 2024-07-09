@@ -19,8 +19,6 @@ public class PostMapper implements Mapper<Post, PostResponse, PostRequest> {
     private UserRepository userRepository;
     private PostRepository postRepository;
     private UserMapper mapper;
-    private PostCommentMapper postCommentMapper;
-    private PostLikeMapper postLikeMapper;
 
     public Post requestToEntity(PostRequest request) {
         Post entity = new Post();
