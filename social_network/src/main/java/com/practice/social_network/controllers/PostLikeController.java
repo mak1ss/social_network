@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/post-like")
@@ -17,6 +19,11 @@ public class PostLikeController {
     @PostMapping
     public PostLikeResponse createPostLike(@RequestBody PostLikeRequest request) {
         return postLikeService.createPostLike(request);
+    }
+
+    @GetMapping
+    public List<PostLikeResponse> getAllPostLikes(@RequestParam Integer postId) {
+        return postLikeService.getPostLikes(postId);
     }
 
     @DeleteMapping

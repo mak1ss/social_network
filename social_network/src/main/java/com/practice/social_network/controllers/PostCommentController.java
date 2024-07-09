@@ -5,7 +5,6 @@ import com.practice.social_network.dtos.postComment.PostCommentResponse;
 import com.practice.social_network.services.intefaces.PostCommentService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

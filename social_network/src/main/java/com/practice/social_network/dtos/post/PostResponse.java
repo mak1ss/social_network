@@ -17,7 +17,7 @@ public class PostResponse extends AbstractResponse {
     private UserResponse user;
     private LocalDateTime creationDate;
     private String postBody;
-    private List<PostLikeResponse> likes;
-    private List<PostCommentResponse> comments;
+    private Integer likes;
+    private Integer comments;
 }
 

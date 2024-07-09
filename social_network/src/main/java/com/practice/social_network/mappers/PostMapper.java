@@ -47,8 +47,8 @@ public class PostMapper implements Mapper<Post, PostResponse, PostRequest> {
         response.setUser(mapper.entityToResponse(entity.getUser()));
         response.setCreationDate(entity.getCreationDate());
         response.setPostBody(entity.getPostBody());
-        response.setComments(postCommentMapper.entitiesToListResponse(entity.getComments()));
-        response.setLikes(postLikeMapper.entitiesToListResponse(entity.getPostLikes()));
+        response.setComments(entity.getComments().size());
+        response.setLikes(entity.getPostLikes().size());
 
         return response;
     }
