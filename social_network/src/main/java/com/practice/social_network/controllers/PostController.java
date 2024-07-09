@@ -1,11 +1,13 @@
 package com.practice.social_network.controllers;
 
-import com.practice.social_network.dtos.PostCommentDTO;
-import com.practice.social_network.dtos.PostDTO;
+import com.practice.social_network.dtos.post.PostResponse;
+import com.practice.social_network.dtos.post.PostRequest;
 import com.practice.social_network.services.intefaces.PostService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -24,45 +26,23 @@ public class PostController {
     }
 
     @GetMapping(path = "/{userId}")
-    public List<PostDTO> getUserPosts(@PathVariable int userId) {
+    public List<PostResponse> getUserPosts(@PathVariable Integer userId) {
         return service.getUserPosts(userId);
     }
 
-    @PostMapping(path = "/{userId}")
-    public PostDTO createPost(@PathVariable int userId, @RequestBody PostDTO post) {
-        return service.createPost(post, userId);
+    @PostMapping
+    public PostResponse createPost(@Valid @RequestBody PostRequest post) {
+        return service.createPost(post);
     }
 
-    @PutMapping(path = "/{userId}/{postId}")
-    public PostDTO updatePost(@PathVariable int userId, @PathVariable int postId, @RequestParam String newPostBody) {
-        PostDTO dto = new PostDTO();
-        dto.setId(postId);
-        dto.setPostBody(newPostBody);
-        return service.updatePost(dto, userId);
+    @PutMapping
+    public PostResponse updatePost(@Valid @RequestBody PostRequest request) {
+        return service.updatePost(request);
     }
 
-    @DeleteMapping(path = "/{userId}")
-    public PostDTO deletePost(@PathVariable int userId, @RequestParam int postId) {
-        return service.deletePost(postId, userId);
-    }
-
-    @GetMapping(path = "/{userId}/news")
-    public List<PostDTO> getFriendsPosts(@PathVariable int userId, @RequestParam int pageNumber) {
-        return service.getFriendsPosts(userId, pageNumber);
-    }
-
-    @PutMapping(path = "/{postId}/like")
-    public PostDTO likePost(@PathVariable int postId, @RequestParam int userId) {
-        return service.likePost(userId, postId);
-    }
-
-    @PutMapping(path = "/{postId}/comment")
-    public PostDTO leaveComment(@PathVariable int postId, @RequestParam int userId, @RequestParam String commentBody){
-        return service.leaveComment(commentBody, postId, userId);
-    }
-
-    @GetMapping(path="/{postId}/comments")
-    public List<PostCommentDTO> getPostComments(@PathVariable int postId, @RequestParam int pageNumber){
-        return service.getPostComments(postId, pageNumber);
+    @DeleteMapping(path="/{postId}")
+    public ResponseEntity<Object> deletePost(@PathVariable Integer postId) {
+        service.deletePost(postId);
+        return ResponseEntity.ok().build();
     }
 }

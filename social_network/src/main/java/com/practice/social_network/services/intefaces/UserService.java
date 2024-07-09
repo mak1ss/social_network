@@ -1,21 +1,21 @@
 package com.practice.social_network.services.intefaces;
 
-import com.practice.social_network.dtos.UserDTO;
+import com.practice.social_network.dtos.user.ChangePasswordRequest;
+import com.practice.social_network.dtos.user.UserRequest;
+import com.practice.social_network.dtos.user.UserResponse;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 
 public interface UserService {
 
-    UserDTO createUser(UserDTO user) throws DataIntegrityViolationException;
+    UserResponse createUser(UserRequest user) throws DataIntegrityViolationException;
 
-    UserDTO updateUser(UserDTO user) throws DataIntegrityViolationException, IllegalArgumentException;
+    UserResponse updateUser(UserRequest user) throws DataIntegrityViolationException, IllegalArgumentException;
 
-    UserDTO deleteUser(int userId) throws IllegalArgumentException;
+    void deleteUser(Integer userId) throws IllegalArgumentException;
 
-    UserDTO followToUser(int userId, int userToFollowId) throws IllegalArgumentException;
+    List<UserResponse> getAllUsers();
 
-    List<UserDTO> getAllUsers();
-
-    UserDTO changeUserPassword(int userId, String newPassword);
+    UserResponse changeUserPassword(Integer userId, ChangePasswordRequest changePasswordRequest);
 }

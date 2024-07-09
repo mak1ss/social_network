@@ -1,25 +1,18 @@
 package com.practice.social_network.services.intefaces;
 
-import com.practice.social_network.dtos.PostCommentDTO;
-import com.practice.social_network.dtos.PostDTO;
+import com.practice.social_network.dtos.post.PostResponse;
+import com.practice.social_network.dtos.post.PostRequest;
 
 import java.util.List;
 
 public interface PostService {
 
-    PostDTO createPost(PostDTO post, int userId) throws IllegalArgumentException;
+    PostResponse createPost(PostRequest post) throws IllegalArgumentException;
 
-    PostDTO updatePost(PostDTO post, int userId) throws IllegalArgumentException;
+    PostResponse updatePost(PostRequest post) throws IllegalArgumentException;
 
-    PostDTO deletePost(int postId, int userId) throws IllegalArgumentException;
+    void deletePost(Integer postId) throws IllegalArgumentException;
 
-    List<PostDTO> getUserPosts(int userId) throws IllegalArgumentException;
+    List<PostResponse> getUserPosts(Integer userId) throws IllegalArgumentException;
 
-    List<PostDTO> getFriendsPosts(int userId, int pageNumber) throws IllegalArgumentException;
-
-    PostDTO likePost(int userId, int postId) throws IllegalArgumentException;
-
-    PostDTO leaveComment(String commentBody, int postId, int userId);
-
-    List<PostCommentDTO> getPostComments(int postId, int pageNumber);
 }

@@ -1,0 +1,2 @@
+ALTER TABLE posts_comments
+ADD COLUMN creation_date datetime

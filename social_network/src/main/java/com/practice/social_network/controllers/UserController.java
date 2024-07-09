@@ -1,9 +1,13 @@
 package com.practice.social_network.controllers;
 
-import com.practice.social_network.dtos.UserDTO;
+import com.practice.social_network.dtos.user.ChangePasswordRequest;
+import com.practice.social_network.dtos.user.UserRequest;
+import com.practice.social_network.dtos.user.UserResponse;
 import com.practice.social_network.services.intefaces.UserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,33 +27,29 @@ public class UserController {
     }
 
     @GetMapping(path = "/all")
-    public List<UserDTO> getAllUsers() {
+    public List<UserResponse> getAllUsers() {
         return service.getAllUsers();
     }
 
     @PostMapping
-    public UserDTO createUser(@RequestBody UserDTO user) {
+    public UserResponse createUser(@Valid @RequestBody UserRequest user) {
         return service.createUser(user);
     }
 
     @PutMapping(path = "/{userId}")
-    public UserDTO updateUser(@PathVariable int userId, @RequestBody UserDTO user) {
+    public UserResponse updateUser(@PathVariable Integer userId, @RequestBody UserRequest user) {
         user.setId(userId);
         return service.updateUser(user);
     }
 
     @DeleteMapping(path = "/{userId}")
-    public UserDTO deleteUser(@PathVariable int userId) {
-        return service.deleteUser(userId);
+    public ResponseEntity<Object> deleteUser(@PathVariable Integer userId) {
+        service.deleteUser(userId);
+        return ResponseEntity.ok().build();
     }
 
-    @PutMapping(path = "/{userId}/follow/")
-    public UserDTO followToUser(@PathVariable int userId, @RequestParam(name = "userToFollow") int userToFollowId) {
-        return service.followToUser(userId, userToFollowId);
-    }
-
-    @PutMapping(path = "/new-password")
-    public UserDTO changePassword(@RequestParam(name = "userId") int userId, @RequestParam(name = "newPassword") String newPassword){
-        return service.changeUserPassword(userId, newPassword);
+    @PutMapping(path = "/{userId}/new-password")
+    public UserResponse changePassword(@PathVariable Integer userId, @Valid @RequestBody ChangePasswordRequest changePasswordRequest){
+        return service.changeUserPassword(userId, changePasswordRequest);
     }
 }
