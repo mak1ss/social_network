@@ -13,6 +13,7 @@ public class PostLikeRequest extends AbstractRequest {
 
     @NotNull
     private Integer postId;
+
     @NotNull
     private Integer userId;
     private LocalDateTime likedAt;

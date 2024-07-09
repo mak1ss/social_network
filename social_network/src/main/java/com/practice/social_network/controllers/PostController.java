@@ -5,6 +5,7 @@ import com.practice.social_network.dtos.post.PostRequest;
 import com.practice.social_network.services.intefaces.PostService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -32,12 +33,12 @@ public class PostController {
     }
 
     @PostMapping
-    public PostResponse createPost(@RequestBody PostRequest post) {
+    public PostResponse createPost(@Valid @RequestBody PostRequest post) {
         return service.createPost(post);
     }
 
     @PutMapping
-    public PostResponse updatePost(@RequestBody PostRequest request) {
+    public PostResponse updatePost(@Valid @RequestBody PostRequest request) {
         return service.updatePost(request);
     }
 

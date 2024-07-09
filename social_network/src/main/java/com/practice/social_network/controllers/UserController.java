@@ -6,6 +6,7 @@ import com.practice.social_network.dtos.user.UserResponse;
 import com.practice.social_network.services.intefaces.UserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponse createUser(@RequestBody UserRequest user) {
+    public UserResponse createUser(@Valid @RequestBody UserRequest user) {
         return service.createUser(user);
     }
 
@@ -49,7 +50,7 @@ public class UserController {
     }
 
     @PutMapping(path = "/{userId}/new-password")
-    public UserResponse changePassword(@PathVariable Integer userId, @RequestBody ChangePasswordRequest changePasswordRequest){
+    public UserResponse changePassword(@PathVariable Integer userId, @Valid @RequestBody ChangePasswordRequest changePasswordRequest){
         return service.changeUserPassword(userId, changePasswordRequest);
     }
 }
