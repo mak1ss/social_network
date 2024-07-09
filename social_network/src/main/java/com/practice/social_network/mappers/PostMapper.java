@@ -20,6 +20,7 @@ public class PostMapper implements Mapper<Post, PostResponse, PostRequest> {
     private PostRepository postRepository;
     private UserMapper mapper;
     private PostCommentMapper postCommentMapper;
+    private PostLikeMapper postLikeMapper;
 
     public Post requestToEntity(PostRequest request) {
         Post entity = new Post();
@@ -32,7 +33,7 @@ public class PostMapper implements Mapper<Post, PostResponse, PostRequest> {
             Post actualEntity = postRepository.findById(entity.getId()).orElseThrow();
             entity.setCreationDate(actualEntity.getCreationDate());
             entity.setComments(actualEntity.getComments());
-            entity.setLikes(actualEntity.getLikes());
+            entity.setPostLikes(actualEntity.getPostLikes());
         } else {
             entity.setCreationDate(LocalDateTime.now());
         }
@@ -47,7 +48,7 @@ public class PostMapper implements Mapper<Post, PostResponse, PostRequest> {
         response.setCreationDate(entity.getCreationDate());
         response.setPostBody(entity.getPostBody());
         response.setComments(postCommentMapper.entitiesToListResponse(entity.getComments()));
-        response.setLikes(entity.getLikes().size());
+        response.setLikes(postLikeMapper.entitiesToListResponse(entity.getPostLikes()));
 
         return response;
     }

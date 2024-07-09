@@ -45,7 +45,7 @@ public class UserController {
     @DeleteMapping(path = "/{userId}")
     public ResponseEntity<Object> deleteUser(@PathVariable Integer userId) {
         service.deleteUser(userId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping(path = "/{userId}/new-password")

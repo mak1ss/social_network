@@ -30,14 +30,9 @@ public class Post {
     @Column(name = "post_body")
     private String postBody;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name ="posts_likes",
-            joinColumns = @JoinColumn(name = "post_id"),
-            inverseJoinColumns = @JoinColumn(name="user_id")
-    )
-    private Set<User> likes = new HashSet<>();
+    @OneToMany(mappedBy = "post")
+    private Set<PostLike> postLikes = new HashSet<>();
 
     @OneToMany(mappedBy = "post")
-    Set<PostComment> comments = new HashSet<>();
+    private Set<PostComment> comments = new HashSet<>();
 }

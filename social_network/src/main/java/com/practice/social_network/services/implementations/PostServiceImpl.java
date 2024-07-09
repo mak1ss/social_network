@@ -69,32 +69,4 @@ public class PostServiceImpl implements PostService {
         }
         return postRepository.getPostsByUserId(userId).stream().map(postMapper::entityToResponse).toList();
     }
-
-    @Override
-    public List<PostResponse> getFriendsPosts(Integer userId, Integer pageNumber) throws IllegalArgumentException {
-        return null;
-    }
-
-    @Override
-    public PostResponse likePost(Integer userId, Integer postId) throws IllegalArgumentException {
-        Optional<User> userOptional = userRepository.findById(userId);
-        Optional<Post> postToLike = postRepository.findById(postId);
-
-        if (userOptional.isEmpty() || postToLike.isEmpty()) {
-            throw new IllegalArgumentException("Wrong user ID or post ID");
-        }
-
-        User user = userOptional.get();
-        Post post = postToLike.get();
-        if (!post.getLikes().contains(user)) {
-            post.getLikes().add(user);
-        } else {
-            post.getLikes().remove(user);
-        }
-
-        postRepository.save(post);
-
-        return postMapper.entityToResponse(postRepository.findById(postId).get());
-    }
-
 }

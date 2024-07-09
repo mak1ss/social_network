@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/post-comments")
+@RequestMapping("/post-comment")
 @AllArgsConstructor
 public class PostCommentController {
 
@@ -41,6 +41,6 @@ public class PostCommentController {
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Object> deleteRecord(@PathVariable Integer commentId) {
         service.deletePostComment(commentId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok().build();
     }
 }

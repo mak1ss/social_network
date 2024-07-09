@@ -36,6 +36,6 @@ public class UserFollowController {
     @DeleteMapping("/{followId}")
     public ResponseEntity<Object> unfollow(@PathVariable Integer followId) {
         followService.deleteFollow(followId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok().build();
     }
 }

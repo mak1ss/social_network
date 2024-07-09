@@ -15,8 +15,4 @@ public interface PostService {
 
     List<PostResponse> getUserPosts(Integer userId) throws IllegalArgumentException;
 
-    List<PostResponse> getFriendsPosts(Integer userId, Integer pageNumber) throws IllegalArgumentException;
-
-    PostResponse likePost(Integer userId, Integer postId) throws IllegalArgumentException;
-
 }

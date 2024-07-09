@@ -1,13 +1,7 @@
 package com.practice.social_network.datagen;
 
-import com.practice.social_network.entities.UserFollow;
-import com.practice.social_network.entities.Post;
-import com.practice.social_network.entities.PostComment;
-import com.practice.social_network.entities.User;
-import com.practice.social_network.repositories.UserFollowRepository;
-import com.practice.social_network.repositories.PostCommentRepository;
-import com.practice.social_network.repositories.PostRepository;
-import com.practice.social_network.repositories.UserRepository;
+import com.practice.social_network.entities.*;
+import com.practice.social_network.repositories.*;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -16,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -26,6 +22,7 @@ public class TestDataGenerator {
     private UserRepository userRepository;
     private PostRepository postRepository;
     private PostCommentRepository commentRepository;
+    private PostLikeRepository postLikeRepository;
     private UserFollowRepository followRepository;
     private PasswordEncoder passwordEncoder;
 
@@ -35,6 +32,17 @@ public class TestDataGenerator {
                 My name is
                 """ + post.getUser().getNickname() + """
                 , nice to meet you! :)""");
+    }
+
+    private void generateLikesForPost(Post post, List<User> usersWhoLiked) {
+        for (User user : usersWhoLiked) {
+            PostLike postLike = new PostLike();
+            postLike.setPost(post);
+            postLike.setUser(user);
+            postLike.setLikedAt(LocalDateTime.now());
+            postLikeRepository.save(postLike);
+            log.info("Saved like: " + postLike);
+        }
     }
 
     @PostConstruct
@@ -115,7 +123,6 @@ public class TestDataGenerator {
         post1.setUser(user1);
         setDefaultPostBody(post1);
         post1.setCreationDate(LocalDateTime.now());
-        post1.setLikes(Set.of(user2, user3));
 
         postRepository.save(post1);
         log.info("Saved post: " + post1);
@@ -125,7 +132,6 @@ public class TestDataGenerator {
         post2.setUser(user2);
         setDefaultPostBody(post2);
         post2.setCreationDate(LocalDateTime.now());
-        post2.setLikes(Set.of(user1, user3));
 
         postRepository.save(post2);
         log.info("Saved post: " + post2);
@@ -135,10 +141,14 @@ public class TestDataGenerator {
         post3.setUser(user3);
         setDefaultPostBody(post3);
         post3.setCreationDate(LocalDateTime.now());
-        post3.setLikes(Set.of(user1, user2));
 
         postRepository.save(post3);
         log.info("Saved post: " + post3);
+
+        // Likes
+        generateLikesForPost(post1, Arrays.asList(user2, user3)); // Post 1 liked by user2 and user3
+        generateLikesForPost(post2, Arrays.asList(user1, user3)); // Post 2 liked by user1 and user3
+        generateLikesForPost(post3, Arrays.asList(user2, user3)); // Post 3 liked by user2 and user3
 
         // Comment 1
         PostComment comment1 = new PostComment();

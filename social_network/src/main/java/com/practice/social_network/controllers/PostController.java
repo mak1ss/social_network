@@ -44,16 +44,6 @@ public class PostController {
     @DeleteMapping(path="/{postId}")
     public ResponseEntity<Object> deletePost(@PathVariable Integer postId) {
         service.deletePost(postId);
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
-    @GetMapping(path = "/{userId}/news")
-    public List<PostResponse> getFriendsPosts(@PathVariable Integer userId, @RequestParam Integer pageNumber) {
-        return service.getFriendsPosts(userId, pageNumber);
-    }
-
-    @PutMapping(path = "/{postId}/like")
-    public PostResponse likePost(@PathVariable Integer postId, @RequestParam Integer userId) {
-        return service.likePost(userId, postId);
+        return ResponseEntity.ok().build();
     }
 }
