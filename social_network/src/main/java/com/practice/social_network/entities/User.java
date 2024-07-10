@@ -1,5 +1,7 @@
 package com.practice.social_network.entities;
 
+import com.practice.social_network.entities.base.Archivable;
+import com.practice.social_network.entities.base.Identifiable;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +12,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @Table(name = "users")
 @DynamicUpdate
-public class User {
+public class User implements Identifiable, Archivable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -25,4 +27,6 @@ public class User {
     private String email;
 
     private String password;
+
+    private boolean archived;
 }

@@ -1,5 +1,7 @@
 package com.practice.social_network.entities;
 
+import com.practice.social_network.entities.base.Archivable;
+import com.practice.social_network.entities.base.Identifiable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "posts_comments")
-public class PostComment {
+public class PostComment implements Identifiable, Archivable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -27,4 +29,7 @@ public class PostComment {
 
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
+
+    @Column(nullable = false, columnDefinition = "TINYINT(1)")
+    private boolean archived;
 }

@@ -1,5 +1,7 @@
 package com.practice.social_network.entities;
 
+import com.practice.social_network.entities.base.Archivable;
+import com.practice.social_network.entities.base.Identifiable;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "posts_likes")
-public class PostLike {
+public class PostLike implements Identifiable, Archivable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +30,7 @@ public class PostLike {
 
     @EqualsAndHashCode.Exclude
     private LocalDateTime likedAt;
+
+    @Column(nullable = false, columnDefinition = "TINYINT(1)")
+    private boolean archived;
 }

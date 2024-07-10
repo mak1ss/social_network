@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -64,8 +63,9 @@ public class UserServiceImpl implements UserService {
         );
 
         if (isPasswordsMatch(changeRequest.getOldPassword(), entity.getPassword())) {
-            repository.updatePassword(userId, passEncoder.encode(changeRequest.getNewPassword()));
-            return userMapper.entityToResponse(repository.findById(userId).get());
+            entity.setPassword(passEncoder.encode(changeRequest.getNewPassword()));
+            entity = repository.save(entity);
+            return userMapper.entityToResponse(entity);
         }
 
         throw new IllegalArgumentException("Wrong password");

@@ -1,5 +1,7 @@
 package com.practice.social_network.entities;
 
+import com.practice.social_network.entities.base.Archivable;
+import com.practice.social_network.entities.base.Identifiable;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "followings")
-public class UserFollow {
+public class UserFollow implements Identifiable, Archivable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +28,7 @@ public class UserFollow {
 
     @Column(name = "subscription_date")
     private LocalDateTime subscriptionDate;
+
+    @Column(nullable = false, columnDefinition = "TINYINT(1)")
+    private boolean archived = false;
 }

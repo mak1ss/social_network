@@ -1,5 +1,7 @@
 package com.practice.social_network.entities;
 
+import com.practice.social_network.entities.base.Archivable;
+import com.practice.social_network.entities.base.Identifiable;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +17,7 @@ import java.util.*;
 @Entity
 @Table(name = "posts")
 @EntityListeners(AuditingEntityListener.class)
-public class Post {
+public class Post implements Identifiable, Archivable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -38,4 +40,7 @@ public class Post {
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
     private Set<PostComment> comments = new HashSet<>();
+
+    @Column(nullable = false, columnDefinition = "TINYINT(1)")
+    private boolean archived;
 }
