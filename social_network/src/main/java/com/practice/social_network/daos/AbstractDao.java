@@ -1,7 +1,7 @@
 package com.practice.social_network.daos;
 
-import com.practice.social_network.entities.base.Archivable;
-import com.practice.social_network.entities.base.PrimaryEntity;
+import com.practice.social_network.model.base.Archivable;
+import com.practice.social_network.model.base.PrimaryEntity;
 import com.practice.social_network.repositories.PrimaryRepository;
 
 import java.util.List;

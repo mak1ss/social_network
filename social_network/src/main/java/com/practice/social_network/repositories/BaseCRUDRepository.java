@@ -1,6 +1,6 @@
 package com.practice.social_network.repositories;
 
-import com.practice.social_network.entities.base.Identifiable;
+import com.practice.social_network.model.base.Identifiable;
 import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean

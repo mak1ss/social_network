@@ -1,6 +1,6 @@
-package com.practice.social_network.services.security;
+package com.practice.social_network.security;
 
-import com.practice.social_network.entities.User;
+import com.practice.social_network.model.User;
 import com.practice.social_network.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

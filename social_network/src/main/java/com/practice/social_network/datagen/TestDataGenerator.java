@@ -1,6 +1,6 @@
 package com.practice.social_network.datagen;
 
-import com.practice.social_network.entities.*;
+import com.practice.social_network.model.*;
 import com.practice.social_network.repositories.*;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @AllArgsConstructor
 @Service

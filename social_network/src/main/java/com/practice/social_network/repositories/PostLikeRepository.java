@@ -1,6 +1,6 @@
 package com.practice.social_network.repositories;
 
-import com.practice.social_network.entities.PostLike;
+import com.practice.social_network.model.PostLike;
 
 import java.util.List;
 

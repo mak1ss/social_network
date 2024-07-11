@@ -1,6 +1,6 @@
 package com.practice.social_network.repositories;
 
-import com.practice.social_network.entities.Post;
+import com.practice.social_network.model.Post;
 
 import java.util.List;
 

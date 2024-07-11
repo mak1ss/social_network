@@ -1,4 +1,4 @@
-package com.practice.social_network.entities.base;
+package com.practice.social_network.model.base;
 
 public interface PrimaryEntity<T>{
 

@@ -1,6 +1,6 @@
 package com.practice.social_network.repositories;
 
-import com.practice.social_network.entities.UserFollow;
+import com.practice.social_network.model.UserFollow;
 
 import java.util.List;
 

@@ -2,8 +2,11 @@ package com.practice.social_network.controllers;
 
 import com.practice.social_network.dtos.postLike.PostLikeRequest;
 import com.practice.social_network.dtos.postLike.PostLikeResponse;
-import com.practice.social_network.services.intefaces.PostLikeService;
-import jakarta.validation.Valid;
+import com.practice.social_network.mappers.Mapper;
+import com.practice.social_network.mappers.PostLikeMapper;
+import com.practice.social_network.model.PostLike;
+import com.practice.social_network.services.AbstractService;
+import com.practice.social_network.services.PostLikeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,23 +16,25 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/post-like")
-public class PostLikeController {
+public class PostLikeController extends AbstractController<PostLike, PostLikeRequest, PostLikeResponse> {
 
-    private final PostLikeService postLikeService;
+    private final PostLikeService service;
+    private final PostLikeMapper mapper;
 
-    @PostMapping
-    public PostLikeResponse createPostLike(@Valid @RequestBody PostLikeRequest request) {
-        return postLikeService.createPostLike(request);
+    @Override
+    protected AbstractService<PostLike> getService() {
+        return service;
+    }
+
+    @Override
+    protected Mapper<PostLike, PostLikeResponse, PostLikeRequest> getMapper() {
+        return mapper;
     }
 
     @GetMapping
-    public List<PostLikeResponse> getAllPostLikes(@RequestParam Integer postId) {
-        return postLikeService.getPostLikes(postId);
+    public ResponseEntity<List<PostLikeResponse>> getAllPostLikes(@RequestParam Integer postId) {
+        List<PostLike> entities = service.getPostLikes(postId);
+        return ResponseEntity.ok(mapper.entitiesToListResponse(entities));
     }
 
-    @DeleteMapping
-    public ResponseEntity<Object> deletePostLike(@Valid @RequestBody PostLikeRequest request) {
-        postLikeService.deletePostLike(request);
-        return ResponseEntity.ok().build();
-    }
 }

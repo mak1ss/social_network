@@ -6,5 +6,4 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public abstract class AbstractRequest {
-    private Integer id;
 }

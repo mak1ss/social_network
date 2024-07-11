@@ -1,6 +1,6 @@
 package com.practice.social_network.repositories;
 
-import com.practice.social_network.entities.base.PrimaryEntity;
+import com.practice.social_network.model.base.PrimaryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;

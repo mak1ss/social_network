@@ -1,6 +1,6 @@
-package com.practice.social_network.services.security;
+package com.practice.social_network.security;
 
-import com.practice.social_network.entities.User;
+import com.practice.social_network.model.User;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

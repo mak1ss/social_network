@@ -2,7 +2,7 @@ package com.practice.social_network.mappers;
 
 import com.practice.social_network.dtos.post.PostRequest;
 import com.practice.social_network.dtos.post.PostResponse;
-import com.practice.social_network.entities.Post;
+import com.practice.social_network.model.Post;
 import com.practice.social_network.repositories.PostRepository;
 import com.practice.social_network.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -20,15 +21,15 @@ public class PostMapper implements Mapper<Post, PostResponse, PostRequest> {
     private PostRepository postRepository;
     private UserMapper mapper;
 
-    public Post requestToEntity(PostRequest request) {
+    public Post requestToEntity(PostRequest request, Optional<Integer> id) {
         Post entity = new Post();
-        entity.setId(request.getId());
+        entity.setId(id.orElse(null));
         entity.setUser(userRepository.findById(request.getUserId()).orElseThrow());
 
         entity.setPostBody(request.getPostBody());
 
-        if(entity.getId() != null){
-            Post actualEntity = postRepository.findById(entity.getId()).orElseThrow();
+        if(id.isPresent()){
+            Post actualEntity = postRepository.findById(id.get()).orElseThrow();
             entity.setCreationDate(actualEntity.getCreationDate());
             entity.setComments(actualEntity.getComments());
             entity.setPostLikes(actualEntity.getPostLikes());

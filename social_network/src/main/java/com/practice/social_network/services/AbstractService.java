@@ -1,7 +1,7 @@
 package com.practice.social_network.services;
 
 import com.practice.social_network.daos.AbstractDao;
-import com.practice.social_network.entities.base.Identifiable;
+import com.practice.social_network.model.base.Identifiable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

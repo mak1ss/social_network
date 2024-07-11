@@ -2,8 +2,8 @@ package com.practice.social_network.controllers;
 
 import com.practice.social_network.dtos.AbstractRequest;
 import com.practice.social_network.dtos.AbstractResponse;
-import com.practice.social_network.entities.base.Archivable;
-import com.practice.social_network.entities.base.Identifiable;
+import com.practice.social_network.model.base.Archivable;
+import com.practice.social_network.model.base.Identifiable;
 import com.practice.social_network.mappers.Mapper;
 import com.practice.social_network.services.AbstractService;
 import jakarta.validation.Valid;
@@ -44,7 +44,7 @@ public abstract class AbstractController<T extends Identifiable & Archivable, Re
             return ResponseEntity.badRequest().build();
         }
 
-        T entity = getMapper().requestToEntity(request);
+        T entity = getMapper().requestToEntity(request, Optional.empty());
         entity = executeEntityCreate(entity);
         ResponseType response = getMapper().entityToResponse(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -53,12 +53,12 @@ public abstract class AbstractController<T extends Identifiable & Archivable, Re
     @PutMapping(path = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseType> updateRecord(@Valid @RequestBody RequestType request) {
+    public ResponseEntity<ResponseType> updateRecord(@PathVariable Integer id, @Valid @RequestBody RequestType request) {
         if(request == null) {
             return ResponseEntity.badRequest().build();
         }
 
-        T entity = getMapper().requestToEntity(request);
+        T entity = getMapper().requestToEntity(request, id.describeConstable());
         entity = executeEntityUpdate(entity);
         ResponseType response = getMapper().entityToResponse(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -80,5 +80,9 @@ public abstract class AbstractController<T extends Identifiable & Archivable, Re
 
     protected T executeEntityUpdate(T entity) {
         return getService().update(entity);
+    }
+
+    protected void executeEntityDelete(T entity) {
+        getService().delete(entity);
     }
 }

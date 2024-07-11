@@ -1,7 +1,7 @@
-package com.practice.social_network.entities;
+package com.practice.social_network.model;
 
-import com.practice.social_network.entities.base.Archivable;
-import com.practice.social_network.entities.base.Identifiable;
+import com.practice.social_network.model.base.Archivable;
+import com.practice.social_network.model.base.Identifiable;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -2,40 +2,41 @@ package com.practice.social_network.mappers;
 
 import com.practice.social_network.dtos.postComment.PostCommentRequest;
 import com.practice.social_network.dtos.postComment.PostCommentResponse;
-import com.practice.social_network.entities.PostComment;
-import com.practice.social_network.repositories.PostCommentRepository;
-import com.practice.social_network.repositories.PostRepository;
-import com.practice.social_network.repositories.UserRepository;
+import com.practice.social_network.model.PostComment;
+import com.practice.social_network.services.PostCommentService;
+import com.practice.social_network.services.PostService;
+import com.practice.social_network.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class PostCommentMapper implements Mapper<PostComment, PostCommentResponse, PostCommentRequest> {
 
-    private PostCommentRepository postCommentRepository;
-    private PostRepository postRepository;
-    private UserRepository userRepository;
+    private PostCommentService postCommentService;
+    private PostService postService;
+    private UserService userService;
     private UserMapper userMapper;
 
-    public PostComment requestToEntity(PostCommentRequest request) {
+    public PostComment requestToEntity(PostCommentRequest request, Optional<Integer> id) {
         PostComment entity = new PostComment();
-        entity.setId(request.getId());
+        entity.setId(id.orElse(null));
         entity.setCommentBody(request.getCommentBody());
 
-        if(entity.getId() != null) {
-            PostComment actualEntity = postCommentRepository.findById(entity.getId()).orElseThrow();
+        if(id.isPresent()) {
+            PostComment actualEntity = postCommentService.getById(id.get()).orElseThrow();
             entity.setCreationDate(actualEntity.getCreationDate());
             entity.setPost(actualEntity.getPost());
             entity.setUser(actualEntity.getUser());
         } else {
             entity.setCreationDate(LocalDateTime.now());
-            entity.setPost(postRepository.findById(request.getPostId()).orElseThrow());
-            entity.setUser(userRepository.findById(request.getUserId()).orElseThrow());
+            entity.setPost(postService.getById(request.getPostId()).orElseThrow());
+            entity.setUser(userService.getById(request.getUserId()).orElseThrow());
         }
 
         return entity;
