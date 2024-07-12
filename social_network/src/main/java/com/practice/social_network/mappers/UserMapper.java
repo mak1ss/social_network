@@ -31,6 +31,8 @@ public class UserMapper implements Mapper<User, UserResponse, UserRequest> {
             entity.setPassword(request.getPassword());
         }
 
+        entity.setArchived(false);
+
         return entity;
     }
 
@@ -40,6 +42,7 @@ public class UserMapper implements Mapper<User, UserResponse, UserRequest> {
         response.setFullName(entity.getFullName());
         response.setNickname(entity.getNickname());
         response.setEmail(entity.getEmail());
+        response.setArchived(entity.isArchived());
 
         return response;
     }

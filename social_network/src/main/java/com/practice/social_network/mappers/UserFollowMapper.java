@@ -3,7 +3,6 @@ package com.practice.social_network.mappers;
 import com.practice.social_network.dtos.userFollow.UserFollowRequest;
 import com.practice.social_network.dtos.userFollow.UserFollowResponse;
 import com.practice.social_network.model.UserFollow;
-import com.practice.social_network.repositories.UserRepository;
 import com.practice.social_network.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +27,8 @@ public class UserFollowMapper implements Mapper<UserFollow, UserFollowResponse, 
         entity.setFollowed(userService.getById(request.getFollowedId()).orElseThrow());
         entity.setSubscriptionDate(LocalDateTime.now());
 
+        entity.setArchived(false);
+
         return entity;
     }
 
@@ -38,6 +39,8 @@ public class UserFollowMapper implements Mapper<UserFollow, UserFollowResponse, 
         response.setFollower(userMapper.entityToResponse(entity.getFollower()));
         response.setFollowed(userMapper.entityToResponse(entity.getFollowed()));
         response.setSubscriptionDate(entity.getSubscriptionDate());
+        response.setArchived(entity.isArchived());
+
         return response;
     }
 

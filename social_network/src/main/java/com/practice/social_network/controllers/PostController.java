@@ -8,7 +8,6 @@ import com.practice.social_network.model.Post;
 import com.practice.social_network.services.AbstractService;
 import com.practice.social_network.services.PostService;
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/posts")
-@SecurityRequirement(name = "networkScheme")
 @AllArgsConstructor
 public class PostController extends AbstractController<Post, PostRequest, PostResponse> {
 

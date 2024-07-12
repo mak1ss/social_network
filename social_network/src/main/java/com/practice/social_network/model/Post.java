@@ -23,7 +23,7 @@ public class Post implements Identifiable, Archivable {
     private Integer id;
 
     @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User user;
 
     @Column(name = "creation_date")

@@ -6,6 +6,7 @@ import com.practice.social_network.model.base.Archivable;
 import com.practice.social_network.model.base.Identifiable;
 import com.practice.social_network.mappers.Mapper;
 import com.practice.social_network.services.AbstractService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@SecurityRequirement(name = "networkScheme")
 public abstract class AbstractController<T extends Identifiable & Archivable, RequestType extends AbstractRequest, ResponseType extends AbstractResponse> {
 
     protected abstract AbstractService<T> getService();
@@ -70,7 +72,7 @@ public abstract class AbstractController<T extends Identifiable & Archivable, Re
             return ResponseEntity.badRequest().build();
         }
 
-        getService().deleteById(id);
+        executeEntityDelete(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -82,7 +84,7 @@ public abstract class AbstractController<T extends Identifiable & Archivable, Re
         return getService().update(entity);
     }
 
-    protected void executeEntityDelete(T entity) {
-        getService().delete(entity);
+    protected void executeEntityDelete(Integer id) {
+        getService().deleteById(id);
     }
 }

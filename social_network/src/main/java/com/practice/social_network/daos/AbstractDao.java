@@ -63,7 +63,7 @@ public abstract class AbstractDao<T extends PrimaryEntity<Integer>> {
     public void deleteById(Integer id) {
         T entity = getRepository().findById(id).orElseThrow();
         if(entity instanceof Archivable archivable) {
-            archivable.setArchived(false);
+            archivable.setArchived(true);
             getRepository().save(entity);
         } else {
             deleteById(id, true);

@@ -39,6 +39,8 @@ public class PostCommentMapper implements Mapper<PostComment, PostCommentRespons
             entity.setUser(userService.getById(request.getUserId()).orElseThrow());
         }
 
+        entity.setArchived(false);
+
         return entity;
     }
 
@@ -49,6 +51,7 @@ public class PostCommentMapper implements Mapper<PostComment, PostCommentRespons
         response.setCommentBody(entity.getCommentBody());
         response.setUser(userMapper.entityToResponse(entity.getUser()));
         response.setCreationDate(entity.getCreationDate());
+        response.setArchived(entity.isArchived());
 
         return response;
     }

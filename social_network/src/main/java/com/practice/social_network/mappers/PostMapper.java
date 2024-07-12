@@ -37,6 +37,8 @@ public class PostMapper implements Mapper<Post, PostResponse, PostRequest> {
             entity.setCreationDate(LocalDateTime.now());
         }
 
+        entity.setArchived(false);
+
         return entity;
     }
 
@@ -48,6 +50,7 @@ public class PostMapper implements Mapper<Post, PostResponse, PostRequest> {
         response.setPostBody(entity.getPostBody());
         response.setComments(entity.getComments().size());
         response.setLikes(entity.getPostLikes().size());
+        response.setArchived(entity.isArchived());
 
         return response;
     }

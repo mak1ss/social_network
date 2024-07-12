@@ -37,4 +37,8 @@ public class PostLikeController extends AbstractController<PostLike, PostLikeReq
         return ResponseEntity.ok(mapper.entitiesToListResponse(entities));
     }
 
+    @Override
+    protected void executeEntityDelete(Integer id) {
+        getService().deleteById(id, true);
+    }
 }

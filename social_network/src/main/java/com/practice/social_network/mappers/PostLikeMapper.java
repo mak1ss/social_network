@@ -39,6 +39,8 @@ public class PostLikeMapper implements Mapper<PostLike, PostLikeResponse, PostLi
             entity.setLikedAt(LocalDateTime.now());
         }
 
+        entity.setArchived(false);
+
         return entity;
     }
 
@@ -48,6 +50,7 @@ public class PostLikeMapper implements Mapper<PostLike, PostLikeResponse, PostLi
         response.setId(entity.getId());
         response.setUser(userMapper.entityToResponse(entity.getUser()));
         response.setLikedAt(entity.getLikedAt());
+        response.setArchived(entity.isArchived());
 
         return response;
     }
