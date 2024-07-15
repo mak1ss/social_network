@@ -1,0 +1,23 @@
+package com.practice.social_network.filtering;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public enum FilteringOperation {
+
+    EQUAL("="),
+    NOT_EQUAL("!="),
+
+    CONTAIN(":"),
+
+    GREATER_THEN(">"),
+    GREATER_OR_EQUAL(">="),
+
+    LESS_THEN("<"),
+    LESS_OR_EQUAL("<=");
+
+    private final String value;
+
+}

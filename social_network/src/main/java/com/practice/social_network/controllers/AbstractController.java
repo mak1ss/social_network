@@ -6,6 +6,9 @@ import com.practice.social_network.model.base.Archivable;
 import com.practice.social_network.model.base.Identifiable;
 import com.practice.social_network.mappers.Mapper;
 import com.practice.social_network.services.AbstractService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +28,23 @@ public abstract class AbstractController<T extends Identifiable & Archivable, Re
 
     protected abstract Mapper<T, ResponseType, RequestType> getMapper();
 
+    @Operation(summary = "Get all", description = "Retrieve all entities")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Successful operation"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<ResponseType>> getAll() {
         List<ResponseType> responseList = getMapper().entitiesToListResponse(getService().getAll());
         return ResponseEntity.ok(responseList);
     }
 
+    @Operation(summary = "Get", description = "Retrieve specific entity by ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Successful operation"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> getRecord(@PathVariable Integer id) {
         Optional<T> entity = getService().getById(id);
@@ -38,11 +52,17 @@ public abstract class AbstractController<T extends Identifiable & Archivable, Re
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Create", description = "Create new entity")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Created successfully"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseType> createRecord(@Valid @RequestBody RequestType request) {
-        if(request == null) {
+        if (request == null) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -52,11 +72,18 @@ public abstract class AbstractController<T extends Identifiable & Archivable, Re
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @Operation(summary = "Update", description = "Update entity")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PutMapping(path = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseType> updateRecord(@PathVariable Integer id, @Valid @RequestBody RequestType request) {
-        if(request == null) {
+        if (request == null) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -66,9 +93,15 @@ public abstract class AbstractController<T extends Identifiable & Archivable, Re
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @Operation(summary = "Delete", description = "Delete entity")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Object> deleteRecord(@PathVariable Integer id) {
-        if(id == null) {
+        if (id == null) {
             return ResponseEntity.badRequest().build();
         }
 
