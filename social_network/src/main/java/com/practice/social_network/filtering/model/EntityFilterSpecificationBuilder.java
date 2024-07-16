@@ -24,7 +24,7 @@ public interface EntityFilterSpecificationBuilder<EntityType> {
                     .filter(p -> p.getPropertyName().equals(criteria.getKey())).findFirst();
 
             if (property.isPresent()) {
-                spec.and(property.get().getSpecificationBuilder().build(criteria));
+                spec = spec.and(property.get().getSpecificationBuilder().build(criteria));
             } else {
                 LOG.warn("[{}] is unsupported property, filtering skipped", criteria.getKey());
             }

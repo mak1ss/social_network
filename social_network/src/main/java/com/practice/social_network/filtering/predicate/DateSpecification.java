@@ -17,7 +17,7 @@ public class DateSpecification<EntityType> implements Specification<EntityType> 
 
     @Override
     public Predicate toPredicate(Root<EntityType> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        LocalDateTime criteriaDate = (LocalDateTime) criteria.getValue();
+        LocalDateTime criteriaDate = LocalDateTime.parse(criteria.getValue()+"T00:00:00");;
         switch(criteria.getOperation()) {
             case EQUAL -> {
                 return cb.equal(root.get(criteria.getKey()), criteriaDate);

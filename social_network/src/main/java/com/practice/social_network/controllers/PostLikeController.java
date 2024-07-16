@@ -2,16 +2,15 @@ package com.practice.social_network.controllers;
 
 import com.practice.social_network.dtos.postLike.PostLikeRequest;
 import com.practice.social_network.dtos.postLike.PostLikeResponse;
+import com.practice.social_network.filtering.model.EntityFilterSpecificationBuilder;
+import com.practice.social_network.filtering.model.postLike.PostLikeSpecificationBuilder;
 import com.practice.social_network.mappers.Mapper;
 import com.practice.social_network.mappers.PostLikeMapper;
 import com.practice.social_network.model.PostLike;
 import com.practice.social_network.services.AbstractService;
 import com.practice.social_network.services.PostLikeService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -20,6 +19,7 @@ public class PostLikeController extends AbstractController<PostLike, PostLikeReq
 
     private final PostLikeService service;
     private final PostLikeMapper mapper;
+    private final PostLikeSpecificationBuilder specificationBuilder;
 
     @Override
     protected AbstractService<PostLike> getService() {
@@ -31,14 +31,14 @@ public class PostLikeController extends AbstractController<PostLike, PostLikeReq
         return mapper;
     }
 
-    @GetMapping
-    public ResponseEntity<List<PostLikeResponse>> getAllPostLikes(@RequestParam Integer postId) {
-        List<PostLike> entities = service.getPostLikes(postId);
-        return ResponseEntity.ok(mapper.entitiesToListResponse(entities));
-    }
-
     @Override
     protected void executeEntityDelete(Integer id) {
         getService().deleteById(id, true);
     }
+
+    @Override
+    protected EntityFilterSpecificationBuilder<PostLike> getSpecificationBuilder() {
+        return specificationBuilder;
+    }
+
 }

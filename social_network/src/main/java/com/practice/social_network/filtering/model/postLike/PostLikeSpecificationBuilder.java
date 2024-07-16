@@ -5,9 +5,11 @@ import com.practice.social_network.filtering.model.EntityFilterSpecificationBuil
 import com.practice.social_network.filtering.predicate.DateSpecificationBuilder;
 import com.practice.social_network.filtering.predicate.IdInEntitySpecificationBuilder;
 import com.practice.social_network.model.PostLike;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class PostLikeSpecificationBuilder implements EntityFilterSpecificationBuilder<PostLike> {
 
     private final List<FilterableProperty<PostLike>> filterableProperties = List.of(

@@ -20,4 +20,12 @@ public enum FilteringOperation {
 
     private final String value;
 
+    public static FilteringOperation fromString(String text) {
+        for (FilteringOperation b : FilteringOperation.values()) {
+            if (b.value.equalsIgnoreCase(text)) {
+                return b;
+            }
+        }
+        throw new UnsupportedOperationException("Unknown filtering operation '" + text + "'");
+    }
 }

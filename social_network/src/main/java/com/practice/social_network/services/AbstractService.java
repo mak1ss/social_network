@@ -2,6 +2,8 @@ package com.practice.social_network.services;
 
 import com.practice.social_network.daos.AbstractDao;
 import com.practice.social_network.model.base.Identifiable;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -12,8 +14,12 @@ public abstract class AbstractService<T extends Identifiable> {
     protected abstract AbstractDao<T> getDao();
 
 
-    public List<T> getAll() {
-        return getDao().getAll();
+    public List<T> getAll(Pageable pageable) {
+        return getDao().getAll(pageable);
+    }
+
+    public List<T> getAll(Pageable pageable, Specification<T> filter) {
+        return getDao().getAll(pageable, filter);
     }
 
     public Optional<T> getById(Integer id) {

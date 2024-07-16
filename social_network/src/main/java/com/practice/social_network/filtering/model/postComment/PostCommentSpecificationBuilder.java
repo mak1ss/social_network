@@ -5,10 +5,11 @@ import com.practice.social_network.filtering.model.EntityFilterSpecificationBuil
 import com.practice.social_network.filtering.predicate.DateSpecificationBuilder;
 import com.practice.social_network.filtering.predicate.IdInEntitySpecificationBuilder;
 import com.practice.social_network.model.PostComment;
+import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.List;
 
+@Component
 public class PostCommentSpecificationBuilder implements EntityFilterSpecificationBuilder<PostComment> {
 
     private final List<FilterableProperty<PostComment>> filterableProperties = List.of(

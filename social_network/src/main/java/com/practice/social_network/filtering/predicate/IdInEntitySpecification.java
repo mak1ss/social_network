@@ -20,6 +20,6 @@ public class IdInEntitySpecification<EntityType> implements Specification<Entity
             return cb.equal(root.get(criteria.getKey()).get("id"), criteria.getValue());
         }
 
-        return cb.conjunction();
+        return null;
     }
 }
