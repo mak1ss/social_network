@@ -16,5 +16,6 @@ public class PostResponse extends AbstractResponse {
     private String postBody;
     private Integer likes;
     private Integer comments;
+    private Boolean archived;
 }
 

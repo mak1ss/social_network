@@ -2,34 +2,43 @@ package com.practice.social_network.controllers;
 
 import com.practice.social_network.dtos.postLike.PostLikeRequest;
 import com.practice.social_network.dtos.postLike.PostLikeResponse;
-import com.practice.social_network.services.intefaces.PostLikeService;
-import jakarta.validation.Valid;
+import com.practice.social_network.filtering.model.EntityFilterSpecificationBuilder;
+import com.practice.social_network.filtering.model.postLike.PostLikeSpecificationBuilder;
+import com.practice.social_network.mappers.Mapper;
+import com.practice.social_network.mappers.PostLikeMapper;
+import com.practice.social_network.model.PostLike;
+import com.practice.social_network.services.AbstractService;
+import com.practice.social_network.services.PostLikeService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/post-like")
-public class PostLikeController {
+public class PostLikeController extends AbstractController<PostLike, PostLikeRequest, PostLikeResponse> {
 
-    private final PostLikeService postLikeService;
+    private final PostLikeService service;
+    private final PostLikeMapper mapper;
+    private final PostLikeSpecificationBuilder specificationBuilder;
 
-    @PostMapping
-    public PostLikeResponse createPostLike(@Valid @RequestBody PostLikeRequest request) {
-        return postLikeService.createPostLike(request);
+    @Override
+    protected AbstractService<PostLike> getService() {
+        return service;
     }
 
-    @GetMapping
-    public List<PostLikeResponse> getAllPostLikes(@RequestParam Integer postId) {
-        return postLikeService.getPostLikes(postId);
+    @Override
+    protected Mapper<PostLike, PostLikeResponse, PostLikeRequest> getMapper() {
+        return mapper;
     }
 
-    @DeleteMapping
-    public ResponseEntity<Object> deletePostLike(@Valid @RequestBody PostLikeRequest request) {
-        postLikeService.deletePostLike(request);
-        return ResponseEntity.ok().build();
+    @Override
+    protected void executeEntityDelete(Integer id) {
+        getService().deleteById(id, true);
     }
+
+    @Override
+    protected EntityFilterSpecificationBuilder<PostLike> getSpecificationBuilder() {
+        return specificationBuilder;
+    }
+
 }

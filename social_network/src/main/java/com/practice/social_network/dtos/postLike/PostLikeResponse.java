@@ -14,4 +14,5 @@ public class PostLikeResponse extends AbstractResponse {
     private Integer id;
     private UserResponse user;
     private LocalDateTime likedAt;
+    private Boolean archived;
 }

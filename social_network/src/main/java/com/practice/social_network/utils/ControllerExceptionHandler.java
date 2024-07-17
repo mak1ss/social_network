@@ -1,20 +1,89 @@
 package com.practice.social_network.utils;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springdoc.api.ErrorMessage;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
-@ControllerAdvice
-public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler({IllegalArgumentException.class, DataIntegrityViolationException.class})
-    protected ResponseEntity<Object> handleException(RuntimeException ex, WebRequest request) {
-        HttpStatus status = ex instanceof IllegalArgumentException ? HttpStatus.BAD_REQUEST : HttpStatus.CONFLICT;
-        return handleExceptionInternal(ex, ex.getLocalizedMessage(), new HttpHeaders(), status, request);
+import java.nio.file.AccessDeniedException;
+import java.util.NoSuchElementException;
+
+@RestControllerAdvice
+@Slf4j
+public class ControllerExceptionHandler {
+
+    @ExceptionHandler({IllegalArgumentException.class})
+    public ResponseEntity<ErrorMessage> handleIllegalArgumentException(
+            IllegalArgumentException ex) {
+        log.error("Illegal argument:" , ex);
+
+        String message = "Illegal argument, please try again: " + ex.getMessage();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage(message));
     }
 
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public ResponseEntity<ErrorMessage> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex) {
+        log.error("Method argument not valid:" , ex);
+
+        String message = "Bad request, please try again: " + ex.getMessage();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage(message));
+    }
+
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public ResponseEntity<ErrorMessage> handleException(
+            DataIntegrityViolationException ex) {
+        log.error("Conflict: " , ex);
+
+        String message = "Conflict with existing data: " + ex.getMessage();
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorMessage(message));
+    }
+
+    @ExceptionHandler({NoHandlerFoundException.class, NoSuchElementException.class})
+    public ResponseEntity<Object> handleResourceNotFoundException(
+            NoSuchElementException ex) {
+
+        log.error("Resource not found:", ex);
+
+        String message = "Resource not found: " + ex.getMessage();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage(message));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorMessage> handleAccessDeniedException(
+            AccessDeniedException exception) {
+
+        log.error("Access denied:", exception);
+
+        String message = "Access denied for your request: " + exception.getMessage();
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorMessage(message));
+    }
+
+    @ExceptionHandler(UnsupportedOperationException.class)
+    public ResponseEntity<ErrorMessage> handleUnsupportedOperationException(
+            UnsupportedOperationException ex){
+        log.error("Unsupported operation:", ex);
+
+        String message = "Unsupported operation: " + ex.getMessage();
+
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(new ErrorMessage(message));
+    }
+
+
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<ErrorMessage> handleException(Exception ex) {
+        log.error("Unhandled exception:", ex);
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorMessage("Internal Server Error"));
+    }
 }

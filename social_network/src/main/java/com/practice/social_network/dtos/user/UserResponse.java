@@ -12,4 +12,5 @@ public class UserResponse extends AbstractResponse {
     private String fullName;
     private String nickname;
     private String email;
+    private Boolean archived;
 }

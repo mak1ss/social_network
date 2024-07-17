@@ -1,15 +1,10 @@
 package com.practice.social_network.repositories;
 
-import com.practice.social_network.entities.UserFollow;
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.practice.social_network.model.UserFollow;
 
 import java.util.List;
 
-@Transactional
-@Repository
-public interface UserFollowRepository extends JpaRepository<UserFollow, Integer> {
+public interface UserFollowRepository extends BaseCRUDRepository<UserFollow> {
 
     List<UserFollow> findByFollowerId(Integer followerId);
 

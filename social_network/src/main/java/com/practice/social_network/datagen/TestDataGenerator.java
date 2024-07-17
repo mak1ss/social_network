@@ -1,23 +1,21 @@
 package com.practice.social_network.datagen;
 
-import com.practice.social_network.entities.*;
+import com.practice.social_network.model.*;
 import com.practice.social_network.repositories.*;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @AllArgsConstructor
 @Service
+@Slf4j
 public class TestDataGenerator {
-    private static final Logger log = LoggerFactory.getLogger(TestDataGenerator.class);
 
     private UserRepository userRepository;
     private PostRepository postRepository;
@@ -107,7 +105,7 @@ public class TestDataGenerator {
         follow3.setSubscriptionDate(LocalDateTime.now());
 
         followRepository.save(follow3);
-        log.info("Saved following : " + user1);
+        log.info("Saved following : " + follow3);
 
         // Following 4
         UserFollow follow4 = new UserFollow();
@@ -116,9 +114,9 @@ public class TestDataGenerator {
         follow4.setSubscriptionDate(LocalDateTime.now());
 
         followRepository.save(follow4);
-        log.info("Saved following : " + user1);
+        log.info("Saved following : " + follow4);
 
-        // Post 1 (owner - user 1, liked by user2 and user3)
+        // Post 1 (owner - user 1)
         Post post1 = new Post();
         post1.setUser(user1);
         setDefaultPostBody(post1);
@@ -127,7 +125,7 @@ public class TestDataGenerator {
         postRepository.save(post1);
         log.info("Saved post: " + post1);
 
-        // Post 2 (owner - user 2, liked by user1 and user3)
+        // Post 2 (owner - user 2)
         Post post2 = new Post();
         post2.setUser(user2);
         setDefaultPostBody(post2);
@@ -136,7 +134,7 @@ public class TestDataGenerator {
         postRepository.save(post2);
         log.info("Saved post: " + post2);
 
-        // Post 3 (owner - user 3, liked by user2 and user3)
+        // Post 3 (owner - user 3)
         Post post3 = new Post();
         post3.setUser(user3);
         setDefaultPostBody(post3);
@@ -169,6 +167,7 @@ public class TestDataGenerator {
 
         commentRepository.save(comment2);
         log.info("Saved comment for post " + comment2.getPost().getId() + ": " + comment2);
+
         // Comment 3
         PostComment comment3 = new PostComment();
         comment3.setUser(user1);

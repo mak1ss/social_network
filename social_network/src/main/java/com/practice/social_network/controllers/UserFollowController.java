@@ -2,40 +2,38 @@ package com.practice.social_network.controllers;
 
 import com.practice.social_network.dtos.userFollow.UserFollowRequest;
 import com.practice.social_network.dtos.userFollow.UserFollowResponse;
-import com.practice.social_network.services.intefaces.UserFollowService;
-import jakarta.validation.Valid;
+import com.practice.social_network.filtering.model.EntityFilterSpecificationBuilder;
+import com.practice.social_network.filtering.model.userFollow.UserFollowSpecificationBuilder;
+import com.practice.social_network.mappers.Mapper;
+import com.practice.social_network.mappers.UserFollowMapper;
+import com.practice.social_network.model.UserFollow;
+import com.practice.social_network.services.AbstractService;
+import com.practice.social_network.services.UserFollowService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/user-follow")
 @AllArgsConstructor
-public class UserFollowController {
+public class UserFollowController extends AbstractController<UserFollow, UserFollowRequest, UserFollowResponse> {
 
-    private final UserFollowService followService;
+    private final UserFollowService service;
+    private final UserFollowMapper mapper;
+    private final UserFollowSpecificationBuilder specificationBuilder;
 
-    @GetMapping("/{userId}/{type}")
-    public List<UserFollowResponse> getUserRelationships(@PathVariable Integer userId, @PathVariable RelationshipType type) {
-        List<UserFollowResponse> entities = new ArrayList<>();
-        switch (type) {
-            case FOLLOWERS -> entities = followService.getUserFollowers(userId);
-            case FOLLOWS -> entities = followService.getUserFollows(userId);
-        }
-        return entities;
+    @Override
+    protected AbstractService<UserFollow> getService() {
+        return service;
     }
 
-    @PostMapping
-    public UserFollowResponse createFollow(@Valid @RequestBody UserFollowRequest followRequest) {
-        return followService.createFollow(followRequest);
+    @Override
+    protected Mapper<UserFollow, UserFollowResponse, UserFollowRequest> getMapper() {
+        return mapper;
     }
 
-    @DeleteMapping("/{followId}")
-    public ResponseEntity<Object> unfollow(@PathVariable Integer followId) {
-        followService.deleteFollow(followId);
-        return ResponseEntity.ok().build();
+    @Override
+    protected EntityFilterSpecificationBuilder<UserFollow> getSpecificationBuilder() {
+        return specificationBuilder;
     }
+
 }

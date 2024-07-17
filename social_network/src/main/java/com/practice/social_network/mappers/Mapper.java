@@ -6,10 +6,11 @@ import com.practice.social_network.dtos.AbstractResponse;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public interface Mapper<T, ResponseType extends AbstractResponse, RequestType extends AbstractRequest> {
 
-    T requestToEntity(RequestType request);
+    T requestToEntity(RequestType request, Optional<Integer> id);
 
     ResponseType entityToResponse(T entity);
 

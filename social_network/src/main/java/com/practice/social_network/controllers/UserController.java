@@ -3,53 +3,43 @@ package com.practice.social_network.controllers;
 import com.practice.social_network.dtos.user.ChangePasswordRequest;
 import com.practice.social_network.dtos.user.UserRequest;
 import com.practice.social_network.dtos.user.UserResponse;
-import com.practice.social_network.services.intefaces.UserService;
+import com.practice.social_network.mappers.Mapper;
+import com.practice.social_network.mappers.UserMapper;
+import com.practice.social_network.model.User;
+import com.practice.social_network.services.AbstractService;
+import com.practice.social_network.services.UserService;
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-
 @RestController
 @RequestMapping(path = "/user")
-@SecurityRequirement(name = "networkScheme")
-public class UserController {
+@AllArgsConstructor
+public class UserController extends AbstractController<User, UserRequest, UserResponse> {
 
-    private final UserService service;
+    private final UserService userService;
+    private final UserMapper mapper;
 
-    @Autowired
-    public UserController(UserService service) {
-        this.service = service;
+    @Override
+    protected AbstractService<User> getService() {
+        return userService;
     }
 
-    @GetMapping(path = "/all")
-    public List<UserResponse> getAllUsers() {
-        return service.getAllUsers();
-    }
-
-    @PostMapping
-    public UserResponse createUser(@Valid @RequestBody UserRequest user) {
-        return service.createUser(user);
-    }
-
-    @PutMapping(path = "/{userId}")
-    public UserResponse updateUser(@PathVariable Integer userId, @RequestBody UserRequest user) {
-        user.setId(userId);
-        return service.updateUser(user);
-    }
-
-    @DeleteMapping(path = "/{userId}")
-    public ResponseEntity<Object> deleteUser(@PathVariable Integer userId) {
-        service.deleteUser(userId);
-        return ResponseEntity.ok().build();
+    @Override
+    protected Mapper<User, UserResponse, UserRequest> getMapper() {
+        return mapper;
     }
 
     @PutMapping(path = "/{userId}/new-password")
-    public UserResponse changePassword(@PathVariable Integer userId, @Valid @RequestBody ChangePasswordRequest changePasswordRequest){
-        return service.changeUserPassword(userId, changePasswordRequest);
+    public ResponseEntity<Object> changePassword(@PathVariable Integer userId, @Valid @RequestBody ChangePasswordRequest request){
+        User user = userService.getById(userId).orElseThrow();
+        if (userService.isPasswordsMatch(request.getOldPassword(), user.getPassword())) {
+            user.setPassword(userService.encodePassword(request.getNewPassword()));
+            userService.save(user);
+            return ResponseEntity.ok(mapper.entityToResponse(user));
+        }
+        return ResponseEntity.badRequest().build();
     }
 }

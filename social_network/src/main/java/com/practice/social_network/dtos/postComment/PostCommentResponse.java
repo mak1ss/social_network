@@ -14,4 +14,5 @@ public class PostCommentResponse extends AbstractResponse {
     private UserResponse user;
     private String commentBody;
     private LocalDateTime creationDate;
+    private Boolean archived;
 }

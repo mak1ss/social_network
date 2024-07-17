@@ -15,5 +15,6 @@ public class UserFollowResponse extends AbstractResponse {
     private UserResponse follower;
     private UserResponse followed;
     private LocalDateTime subscriptionDate;
+    private Boolean archived;
 
 }

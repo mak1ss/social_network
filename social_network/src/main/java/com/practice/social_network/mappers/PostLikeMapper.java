@@ -2,35 +2,31 @@ package com.practice.social_network.mappers;
 
 import com.practice.social_network.dtos.postLike.PostLikeRequest;
 import com.practice.social_network.dtos.postLike.PostLikeResponse;
-import com.practice.social_network.entities.PostLike;
-import com.practice.social_network.repositories.PostRepository;
-import com.practice.social_network.repositories.UserRepository;
+import com.practice.social_network.model.PostLike;
+import com.practice.social_network.services.PostService;
+import com.practice.social_network.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class PostLikeMapper implements Mapper<PostLike, PostLikeResponse, PostLikeRequest> {
 
     private UserMapper userMapper;
-    private PostRepository postRepository;
-    private UserRepository userRepository;
-
+    private PostService postService;
+    private UserService userService;
 
     @Override
-    public PostLike requestToEntity(PostLikeRequest request) {
+    public PostLike requestToEntity(PostLikeRequest request, Optional<Integer> id) {
         PostLike entity = new PostLike();
 
-        entity.setPost(postRepository.findById(request.getPostId()).orElseThrow(
-                () -> new IllegalArgumentException("Post not found")
-        ));
-        entity.setUser(userRepository.findById(request.getUserId()).orElseThrow(
-                () -> new IllegalArgumentException("User not found")
-        ));
+        entity.setPost(postService.getById(request.getPostId()).orElseThrow());
+        entity.setUser(userService.getById(request.getUserId()).orElseThrow());
 
         if(entity.getPost().getPostLikes().contains(entity)) {
             PostLike actualEntity = entity.getPost().getPostLikes().stream()
@@ -43,6 +39,8 @@ public class PostLikeMapper implements Mapper<PostLike, PostLikeResponse, PostLi
             entity.setLikedAt(LocalDateTime.now());
         }
 
+        entity.setArchived(false);
+
         return entity;
     }
 
@@ -52,6 +50,7 @@ public class PostLikeMapper implements Mapper<PostLike, PostLikeResponse, PostLi
         response.setId(entity.getId());
         response.setUser(userMapper.entityToResponse(entity.getUser()));
         response.setLikedAt(entity.getLikedAt());
+        response.setArchived(entity.isArchived());
 
         return response;
     }

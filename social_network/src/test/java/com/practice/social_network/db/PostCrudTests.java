@@ -1,7 +1,7 @@
 package com.practice.social_network.db;
 
-import com.practice.social_network.entities.Post;
-import com.practice.social_network.entities.User;
+import com.practice.social_network.model.Post;
+import com.practice.social_network.model.User;
 import com.practice.social_network.repositories.PostRepository;
 import com.practice.social_network.repositories.UserRepository;
 import org.junit.*;
