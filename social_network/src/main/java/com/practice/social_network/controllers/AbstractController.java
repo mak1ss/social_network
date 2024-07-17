@@ -176,6 +176,8 @@ public abstract class AbstractController<T extends Identifiable & Archivable, Re
                 } else {
                     log.warn("[{}] is unsupported property, filtering skipped", key);
                 }
+            } else {
+                log.warn("Unrecognisable searching input: {}", search);
             }
         }
         return searchCriteria;

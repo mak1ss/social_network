@@ -20,25 +20,45 @@ public class DateSpecification<EntityType> implements Specification<EntityType> 
         LocalDateTime criteriaDate = LocalDateTime.parse(criteria.getValue()+"T00:00:00");;
         switch(criteria.getOperation()) {
             case EQUAL -> {
-                return cb.equal(root.get(criteria.getKey()), criteriaDate);
+                return handleCriteriaEqual(root, cb, criteriaDate);
             }
             case NOT_EQUAL -> {
-                return cb.notEqual(root.get(criteria.getKey()), criteriaDate);
+                return cb.not(handleCriteriaEqual(root, cb, criteriaDate));
             }
             case GREATER_THEN -> {
-                return cb.greaterThan(root.get(criteria.getKey()), criteriaDate);
+                return cb.greaterThan(root.get(criteria.getKey()), toEndOfDay(criteriaDate));
             }
             case GREATER_OR_EQUAL -> {
-                return cb.greaterThanOrEqualTo(root.get(criteria.getKey()), criteriaDate);
+                return cb.or(
+                        cb.greaterThan(root.get(criteria.getKey()), criteriaDate),
+                        handleCriteriaEqual(root, cb, criteriaDate)
+                );
             }
             case LESS_THEN -> {
                 return cb.lessThan(root.get(criteria.getKey()), criteriaDate);
             }
             case LESS_OR_EQUAL -> {
-                return cb.lessThanOrEqualTo(root.get(criteria.getKey()), criteriaDate);
+                return cb.or(
+                        cb.lessThan(root.get(criteria.getKey()), criteriaDate),
+                        handleCriteriaEqual(root, cb, criteriaDate)
+                );
             }
         }
 
         return cb.conjunction();
+    }
+
+    private Predicate handleCriteriaEqual(Root<EntityType> root, CriteriaBuilder cb, LocalDateTime value) {
+        LocalDateTime startOfDay = value.toLocalDate().atStartOfDay();
+        LocalDateTime endOfDay = toEndOfDay(value);
+
+        return cb.and(
+                cb.greaterThanOrEqualTo(root.get(criteria.getKey()), startOfDay),
+                cb.lessThanOrEqualTo(root.get(criteria.getKey()), endOfDay)
+        );
+    }
+
+    private LocalDateTime toEndOfDay(LocalDateTime date) {
+        return date.toLocalDate().atTime(23, 59, 59);
     }
 }

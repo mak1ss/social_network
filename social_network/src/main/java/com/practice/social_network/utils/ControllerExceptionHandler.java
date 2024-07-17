@@ -68,10 +68,22 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorMessage(message));
     }
 
+    @ExceptionHandler(UnsupportedOperationException.class)
+    public ResponseEntity<ErrorMessage> handleUnsupportedOperationException(
+            UnsupportedOperationException ex){
+        log.error("Unsupported operation:", ex);
+
+        String message = "Unsupported operation: " + ex.getMessage();
+
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(new ErrorMessage(message));
+    }
+
+
     @ExceptionHandler({Exception.class})
     public ResponseEntity<ErrorMessage> handleException(Exception ex) {
         log.error("Unhandled exception:", ex);
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessage("Internal Server Error"));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorMessage("Internal Server Error"));
     }
 }

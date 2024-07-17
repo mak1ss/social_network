@@ -19,6 +19,6 @@ public class DateSpecificationBuilder<EntityType> implements SpecificationBuilde
 
     @Override
     public Specification<EntityType> build(SearchCriteria searchCriteria) {
-        return new DateSpecification(searchCriteria);
+        return new DateSpecification<>(searchCriteria);
     }
 }
