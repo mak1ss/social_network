@@ -3,6 +3,7 @@ package com.practice.social_network.mappers;
 import com.practice.social_network.dtos.user.UserRequest;
 import com.practice.social_network.dtos.user.UserResponse;
 import com.practice.social_network.model.User;
+import com.practice.social_network.model.base.Role;
 import com.practice.social_network.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,15 +21,18 @@ public class UserMapper implements Mapper<User, UserResponse, UserRequest> {
     public User requestToEntity(UserRequest request, Optional<Integer> id) {
         User entity = new User();
         entity.setId(id.orElse(null));
-        entity.setFullName(request.getFullName());
+        entity.setFirstName(request.getFirstName());
+        entity.setLastName(request.getLastName());
         entity.setNickname(request.getNickname());
         entity.setEmail(request.getEmail());
 
         if(id.isPresent()) {
             User actualEntity = userRepository.findById(id.get()).orElseThrow();
             entity.setPassword(actualEntity.getPassword());
+            entity.setRole(actualEntity.getRole());
         } else {
             entity.setPassword(request.getPassword());
+            entity.setRole(Role.ROLE_USER);
         }
 
         entity.setArchived(false);
@@ -39,9 +43,11 @@ public class UserMapper implements Mapper<User, UserResponse, UserRequest> {
     public UserResponse entityToResponse(User entity) {
         UserResponse response = new UserResponse();
         response.setId(entity.getId());
-        response.setFullName(entity.getFullName());
+        response.setFirstName(entity.getFirstName());
+        response.setLastName(entity.getLastName());
         response.setNickname(entity.getNickname());
         response.setEmail(entity.getEmail());
+        response.setRole(entity.getRole());
         response.setArchived(entity.isArchived());
 
         return response;

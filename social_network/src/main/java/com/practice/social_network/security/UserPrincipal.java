@@ -5,11 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -20,7 +21,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new HashSet<GrantedAuthority>();
+        return List.of(new SimpleGrantedAuthority(user.getRole().toString()));
     }
 
     @Override

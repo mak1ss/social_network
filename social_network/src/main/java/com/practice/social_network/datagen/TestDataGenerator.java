@@ -1,6 +1,7 @@
 package com.practice.social_network.datagen;
 
 import com.practice.social_network.model.*;
+import com.practice.social_network.model.base.Role;
 import com.practice.social_network.repositories.*;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
@@ -52,9 +53,11 @@ public class TestDataGenerator {
 
         // User 1
         User user1 = new User();
-        user1.setFullName("Vasia Volodymyrovich");
+        user1.setFirstName("Vasia");
+        user1.setLastName("Vovchok");
         user1.setNickname("vasi0k");
         user1.setEmail("vasia@gmail.com");
+        user1.setRole(Role.ROLE_USER);
         user1.setPassword(passwordEncoder.encode("qwerty"));
 
         userRepository.save(user1);
@@ -62,9 +65,11 @@ public class TestDataGenerator {
 
         // User 2
         User user2 = new User();
-        user2.setFullName("Maksym Volodymyrovich");
+        user2.setFirstName("Maks");
+        user2.setLastName("Diachuk");
         user2.setNickname("mak1s");
         user2.setEmail("maks@gmail.com");
+        user2.setRole(Role.ROLE_USER);
         user2.setPassword(passwordEncoder.encode("qwerty"));
 
         userRepository.save(user2);
@@ -72,9 +77,11 @@ public class TestDataGenerator {
 
         // User 3
         User user3 = new User();
-        user3.setFullName("Olena Vasilivna");
+        user3.setFirstName("Olena");
+        user3.setLastName("Markiv");
         user3.setNickname("olen4");
         user3.setEmail("olena@gmail.com");
+        user3.setRole(Role.ROLE_USER);
         user3.setPassword(passwordEncoder.encode("qwerty"));
 
         userRepository.save(user3);

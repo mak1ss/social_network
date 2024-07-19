@@ -2,6 +2,7 @@ package com.practice.social_network.model;
 
 import com.practice.social_network.model.base.Archivable;
 import com.practice.social_network.model.base.Identifiable;
+import com.practice.social_network.model.base.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,16 +18,22 @@ public class User implements Identifiable, Archivable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "full_name", length = 100)
-    private String fullName;
+    @Column(name = "first_name", nullable = false, length = 50)
+    private String firstName;
 
-    @Column(length = 40)
+    @Column(name = "last_name", nullable = false, length = 50)
+    private String lastName;
+
+    @Column(length = 40, unique = true, nullable = false)
     private String nickname;
 
-    @Column(length = 100)
+    @Column(length = 100, unique = true)
     private String email;
 
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     private boolean archived;
 }

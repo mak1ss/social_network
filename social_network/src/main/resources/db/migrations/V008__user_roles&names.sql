@@ -1,0 +1,5 @@
+ALTER TABLE users
+    DROP COLUMN full_name,
+    ADD COLUMN first_name VARCHAR(50) NOT NULL,
+    ADD COLUMN last_name VARCHAR (50) NOT NULL,
+    ADD COLUMN role enum('NOT_CONFIRMED', 'ROLE_USER', 'ROLE_ADMIN') NOT NULL

@@ -10,7 +10,10 @@ import lombok.*;
 public class UserRequest extends AbstractRequest {
 
     @NotBlank
-    private String fullName;
+    private String firstName;
+
+    @NotBlank
+    private String lastName;
 
     @NotBlank
     private String nickname;
@@ -18,6 +21,7 @@ public class UserRequest extends AbstractRequest {
     @NotBlank
     @Email
     private String email;
+
     private String password;
 
 }
