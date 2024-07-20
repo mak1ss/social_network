@@ -8,9 +8,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 public class SecurityConfig {
@@ -19,7 +16,6 @@ public class SecurityConfig {
             "/swagger-ui/**",
             "/v2/api-docs/**",
             "/swagger-resources/**",
-            "/user"
     };
 
     @Bean
@@ -32,15 +28,15 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(AUTH_WHITE_LIST).permitAll()
                         .requestMatchers(HttpMethod.GET, "/posts/**").permitAll()
-                        .requestMatchers("/posts/**").hasAnyRole("ROLE_USER", "ROLE_ADMIN")
+                        .requestMatchers("/posts/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/post-comment/**").permitAll()
-                        .requestMatchers("/post-comment/**").hasAnyRole("ROLE_USER", "ROLE_ADMIN")
-                        .requestMatchers("/post-like/**").hasAnyRole("ROLE_USER", "ROLE_ADMIN")
+                        .requestMatchers("/post-comment/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/post-like/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/user/**").permitAll()
-                        .requestMatchers("/user/**").hasAnyRole("ROLE_USER", "ROLE_ADMIN")
-                        .requestMatchers("/user-follow/**").hasAnyRole("ROLE_USER", "ROLE_ADMIN")
+                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/user-follow/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(AUTH_WHITE_LIST).permitAll()
                 );
         return http.build();
     }
