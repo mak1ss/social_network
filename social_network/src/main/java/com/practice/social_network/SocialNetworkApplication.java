@@ -16,8 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @SpringBootApplication
 @EnableJpaRepositories
 @EnableJpaAuditing
-@EnableWebSecurity
-@SecurityScheme(name = "networkScheme", scheme = "basic", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
+@SecurityScheme(name = "Email-password authentication", scheme = "basic", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
 public class SocialNetworkApplication extends SpringBootServletInitializer {
     public static void main(String[] args) {
         SpringApplication.run(SocialNetworkApplication.class, args);

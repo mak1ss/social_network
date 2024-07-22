@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -27,17 +28,18 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage(message));
     }
 
-    @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResponseEntity<ErrorMessage> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex) {
-        log.error("Method argument not valid:" , ex);
+    @ExceptionHandler({MethodArgumentNotValidException.class, MissingServletRequestParameterException.class})
+    public ResponseEntity<ErrorMessage> handleBadRequest(
+            Exception ex) {
+
+        log.error("Bad request:" , ex);
 
         String message = "Bad request, please try again: " + ex.getMessage();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage(message));
     }
 
     @ExceptionHandler({DataIntegrityViolationException.class})
-    public ResponseEntity<ErrorMessage> handleException(
+    public ResponseEntity<ErrorMessage> handleConflict(
             DataIntegrityViolationException ex) {
         log.error("Conflict: " , ex);
 
@@ -80,7 +82,7 @@ public class ControllerExceptionHandler {
 
 
     @ExceptionHandler({Exception.class})
-    public ResponseEntity<ErrorMessage> handleException(Exception ex) {
+    public ResponseEntity<ErrorMessage> handleAllExceptions(Exception ex) {
         log.error("Unhandled exception:", ex);
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -32,7 +32,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
-@SecurityRequirement(name = "networkScheme")
+@SecurityRequirement(name = "Email-password authentication")
 public abstract class AbstractController<T extends Identifiable & Archivable, RequestType extends AbstractRequest, ResponseType extends AbstractResponse> {
 
     private static final Pattern PATTERN = Pattern.compile("(\\w+?)(:|[!<>]=?|=)(.*)");
