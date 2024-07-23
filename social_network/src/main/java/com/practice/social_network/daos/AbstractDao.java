@@ -48,6 +48,10 @@ public abstract class AbstractDao<T extends PrimaryEntity<Integer>> {
         return Specification.where(null);
     }
 
+    public Optional<T> getOne(Specification<T> filter) {
+        return getRepository().findOne(filter);
+    }
+
     public Optional<T> getById(Integer id) {
         return getRepository().findById(id);
     }

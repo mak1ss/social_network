@@ -7,6 +7,14 @@ spring:
     username: root
     password: root
 
+com:
+  practice:
+    social_network:
+      jwt:
+        jwtSecret: c3VwZXJTZWNyZXRLZXk=
+        jwtExpirationMinutes: 60
+        refreshTokenExpirationMinutes: 180
+
 ---
 
 spring:
@@ -17,3 +25,11 @@ spring:
     url: jdbc:mysql://social_network_mysql/social_network_db
     username: root
     password: 070809az
+
+com:
+  practice:
+    social_network:
+      jwt:
+        jwtSecret: c3VwZXJTZWNyZXRLZXk=
+        jwtExpirationMinutes: 60
+        refreshTokenExpirationMinutes: 180
