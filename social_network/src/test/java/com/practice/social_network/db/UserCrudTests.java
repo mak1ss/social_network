@@ -1,7 +1,7 @@
 package com.practice.social_network.db;
 
-import com.practice.social_network.model.User;
-import com.practice.social_network.repositories.UserRepository;
+import com.network.model.User;
+import com.network.repositories.UserRepository;
 
 import org.junit.After;
 import org.junit.Before;

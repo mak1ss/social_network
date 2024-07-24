@@ -11,7 +11,7 @@ com:
   practice:
     social_network:
       jwt:
-        jwtSecret: c3VwZXJTZWNyZXRLZXk=
+        jwtSecret: c29jaWFsLW5ldHdvcmstdmVyeS1zZWN1cmUtc2VjcmV0LWtleQ==
         jwtExpirationMinutes: 60
         refreshTokenExpirationMinutes: 180
 
@@ -30,6 +30,6 @@ com:
   practice:
     social_network:
       jwt:
-        jwtSecret: c3VwZXJTZWNyZXRLZXk=
+        jwtSecret: c29jaWFsLW5ldHdvcmstdmVyeS1zZWN1cmUtc2VjcmV0LWtleQ==
         jwtExpirationMinutes: 60
         refreshTokenExpirationMinutes: 180

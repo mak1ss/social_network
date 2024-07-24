@@ -1,9 +1,9 @@
 package com.practice.social_network.db;
 
-import com.practice.social_network.model.Post;
-import com.practice.social_network.model.User;
-import com.practice.social_network.repositories.PostRepository;
-import com.practice.social_network.repositories.UserRepository;
+import com.network.model.Post;
+import com.network.model.User;
+import com.network.repositories.PostRepository;
+import com.network.repositories.UserRepository;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.context.ApplicationContext;
