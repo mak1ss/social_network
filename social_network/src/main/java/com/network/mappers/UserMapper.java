@@ -6,6 +6,7 @@ import com.network.dtos.user.UserResponse;
 import com.network.model.base.Role;
 import com.network.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class UserMapper implements Mapper<User, UserResponse, UserRequest> {
 
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     public User requestToEntity(UserRequest request, Optional<Integer> id) {
         User entity = new User();
@@ -24,14 +26,15 @@ public class UserMapper implements Mapper<User, UserResponse, UserRequest> {
         entity.setFirstName(request.getFirstName());
         entity.setLastName(request.getLastName());
         entity.setNickname(request.getNickname());
-        entity.setEmail(request.getEmail());
 
         if(id.isPresent()) {
             User actualEntity = userRepository.findById(id.get()).orElseThrow();
+            entity.setEmail(actualEntity.getEmail());
             entity.setPassword(actualEntity.getPassword());
             entity.setRole(actualEntity.getRole());
         } else {
-            entity.setPassword(request.getPassword());
+            entity.setEmail(request.getEmail());
+            entity.setPassword(passwordEncoder.encode(request.getPassword()));
             entity.setRole(Role.ROLE_USER);
         }
 

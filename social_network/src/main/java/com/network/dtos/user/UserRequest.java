@@ -18,7 +18,6 @@ public class UserRequest extends AbstractRequest {
     @NotBlank
     private String nickname;
 
-    @NotBlank
     @Email
     private String email;
 
