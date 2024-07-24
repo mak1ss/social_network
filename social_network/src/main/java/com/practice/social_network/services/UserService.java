@@ -33,7 +33,7 @@ public class UserService extends AbstractService<User> {
     }
 
     public void checkEmailAccessibility(String email) {
-        if(dao.findByEmail(email) != null) {
+        if(dao.findByEmail(email).isPresent()) {
             throw new IllegalArgumentException("User with this email address already exists");
         }
     }
