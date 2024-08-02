@@ -5,8 +5,7 @@ pipeline {
     checkout scm
 
     tools {
-        maven 'Maven.3.9.8'
-
+        maven 'default-maven'
     }
 
     stages {
