@@ -2,16 +2,36 @@ pipeline {
 
     agent any
 
+    checkout scm
+
+    tools {
+        maven 'Maven.3.9.8'
+
+    }
+
     stages {
+
+        stage('Compile') {
+
+            steps {
+                sh 'mvn clean compile'
+            }
+
+        }
+
         stage('Build') {
 
-            sh 'mvn clean install -Dmaven.test.skip'
+            steps {
+                sh 'mvn clean install -Dmaven.test.skip'
+            }
 
         }
 
         stage('Test execution') {
 
-            sh 'mvn clean test'
+            steps {
+                sh 'mvn clean test'
+            }
 
         }
     }
