@@ -2,14 +2,11 @@ pipeline {
 
     agent any
 
-    checkout scm
-
     tools {
         maven 'default-maven'
     }
 
     stages {
-
         stage('Compile') {
 
             steps {
@@ -34,5 +31,4 @@ pipeline {
 
         }
     }
-
 }
