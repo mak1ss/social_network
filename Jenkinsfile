@@ -14,9 +14,7 @@ pipeline {
         stage('Compile') {
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
-                    withChecks(name: 'Compilation', includeStage: true) {
-                        sh 'mvn clean compile'
-                    }
+                   sh 'mvn clean compile'
                 }
             }
             post {
@@ -31,9 +29,7 @@ pipeline {
         stage('Build') {
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
-                    withChecks(name: 'Build', includeStage: true) {
-                        sh 'mvn clean install -Dmaven.test.skip'
-                    }
+                   sh 'mvn clean install -Dmaven.test.skip'
                 }
             }
             post {
@@ -48,9 +44,7 @@ pipeline {
         stage('Test execution') {
             steps {
                 timeout(time: 15, unit: 'MINUTES') {
-                    withChecks(name: 'Testing', includeStage: true) {
-                        sh 'mvn clean test'
-                    }
+                   sh 'mvn clean test'
                 }
             }
             post {
