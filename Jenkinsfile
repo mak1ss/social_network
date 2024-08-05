@@ -12,17 +12,23 @@ pipeline {
     stages {
         stage ('Compile') {
             steps {
-                sh 'mvn clean compile'
+                withChecks(name: 'Compilation', includeStage: true) {
+                    sh 'mvn clean compile'
+                }
             }
         }
         stage ('Build') {
             steps {
-                sh 'mvn clean install -Dmaven.test.skip'
+                withChecks(name: 'Build', includeStage: true) {
+                    sh 'mvn clean install -Dmaven.test.skip'
+                }
             }
         }
         stage ('Test execution') {
             steps {
-                sh 'mvn clean test'
+                withChecks(name: 'Testing', includeStage: true) {
+                    sh 'mvn clean test'
+                }
             }
         }
     }
