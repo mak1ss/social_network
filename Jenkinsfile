@@ -4,6 +4,7 @@ pipeline {
 
     options {
         buildDiscarder(logRotator(numToKeepStr:'4'))
+        timeout(time: 30, unit: 'MINUTES')
     }
 
     tools {
@@ -12,21 +13,23 @@ pipeline {
     stages {
         stage ('Compile') {
             steps {
-                withChecks(name: 'Compilation') {
-                    sh 'mvn clean compile'
+                timeout(time: 10, unit: 'MINUTES') {
+                    withChecks(name: 'Compilation') {
+                        sh 'mvn clean compile'
+                    }
                 }
             }
         }
         stage ('Build') {
             steps {
-                withChecks(name: 'Build') {
+                timeout(time: 10, unit: 'MINUTES') {
                     sh 'mvn clean install -Dmaven.test.skip'
                 }
             }
         }
         stage ('Test execution') {
             steps {
-                withChecks(name: 'Testing') {
+                timeout(time: 10, unit: 'MINUTES') {
                     sh 'mvn clean test'
                 }
             }
