@@ -1,10 +1,13 @@
 package com.network.mappers;
 
+import com.network.model.User;
 import com.network.model.UserFollow;
+import com.network.services.AuthorizationService;
 import com.network.services.UserService;
 import com.network.dtos.userFollow.UserFollowRequest;
 import com.network.dtos.userFollow.UserFollowResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,11 +21,16 @@ public class UserFollowMapper implements Mapper<UserFollow, UserFollowResponse, 
 
     private UserService userService;
     private UserMapper userMapper;
+    private AuthorizationService authService;
 
     @Override
     public UserFollow requestToEntity(UserFollowRequest request, Optional<Integer> id) {
         UserFollow entity = new UserFollow();
         entity.setId(id.orElse(null));
+
+        if(!isFollowerAuthorized(request.getFollowerId())) {
+            throw new AccessDeniedException("You do not have permission to create followers");
+        }
         entity.setFollower(userService.getById(request.getFollowerId()).orElseThrow());
         entity.setFollowed(userService.getById(request.getFollowedId()).orElseThrow());
         entity.setSubscriptionDate(LocalDateTime.now());
@@ -47,5 +55,12 @@ public class UserFollowMapper implements Mapper<UserFollow, UserFollowResponse, 
     @Override
     public List<UserFollowResponse> entitiesToListResponse(Collection<UserFollow> entityList) {
         return entityList.stream().map(this::entityToResponse).toList();
+    }
+
+    private boolean isFollowerAuthorized(Integer followerId) {
+        String authorizedEmail = authService.getAuthorizedUser().orElseThrow().getUsername();
+        User authorizedUser = userService.findByEmail(authorizedEmail).orElseThrow();
+
+        return authorizedUser.getId().equals(followerId);
     }
 }
