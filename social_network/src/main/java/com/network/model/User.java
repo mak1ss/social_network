@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.Objects;
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -36,4 +38,8 @@ public class User implements Identifiable, Archivable {
     private Role role;
 
     private boolean archived;
+
+    public boolean isAdmin() {
+        return Objects.equals(role, Role.ROLE_ADMIN);
+    }
 }

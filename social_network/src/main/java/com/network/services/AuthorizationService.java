@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -19,6 +20,7 @@ public class AuthorizationService {
     private JwtService jwtService;
     private UserMapper userMapper;
     private TokenService tokenService;
+    private UserService userService;
 
     public AuthorizationResponse authorize(User user) {
         AuthorizationResponse response = new AuthorizationResponse();
@@ -40,5 +42,16 @@ public class AuthorizationService {
         }
 
         return Optional.of((UserPrincipal) authentication.getPrincipal());
+    }
+
+    public boolean isOperationAuthorizedOrPerformedByAdmin(Integer userId) {
+        String authorizedUserEmail = getAuthorizedUser().orElseThrow().getUsername();
+        User authorizedUser = userService.findByEmail(authorizedUserEmail).orElseThrow();
+
+        if(Objects.equals(authorizedUser.getId(), userId)) {
+            return true;
+        }
+
+        return authorizedUser.isAdmin();
     }
 }
