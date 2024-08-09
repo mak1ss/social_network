@@ -15,10 +15,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -57,12 +59,13 @@ public abstract class AbstractController<T extends Identifiable & Archivable, Re
     public ResponseEntity<List<ResponseType>> getAll(
             @RequestParam Integer pageIndex,
             @RequestParam Integer pageSize,
-            @RequestParam(required = false) Optional<String> search
+            @RequestParam(required = false) Optional<String> search,
+            @PathParam(value = "sort") Sort sort
     ) {
 
         Specification<T> filter = buildDefaultGetAllFiltering(search);
-
-        List<ResponseType> responseList = getMapper().entitiesToListResponse(getService().getAll(PageRequest.of(pageIndex, pageSize), filter));
+        Sort sortRequest = sort == null ? Sort.unsorted() : sort;
+        List<ResponseType> responseList = getMapper().entitiesToListResponse(getService().getAll(PageRequest.of(pageIndex, pageSize, sortRequest), filter));
         return ResponseEntity.ok(responseList);
     }
 
